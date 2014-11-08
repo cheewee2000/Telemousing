@@ -1,6 +1,6 @@
 <h3>Pointer</h3>
 =======================
-conceived:	Che-Wei Wang, 2009<br>
+conceived:	Che-Wei Wang, 2008 <a href="http://cwwang.com/2008/02/03/telecursing/">TeleCursing</a>"<br>
 built by:	Che-Wei Wang & Jonathan Bobrow, 2014
 
 <h4>What is it?</h4>
