@@ -1,6 +1,6 @@
 <h3>Pointer</h3>
 =======================
-conceived:	Che-Wei Wang, 2009
+conceived:	Che-Wei Wang, 2009<br>
 built by:	Che-Wei Wang & Jonathan Bobrow, 2014
 
 <h4>What is it?</h4>
