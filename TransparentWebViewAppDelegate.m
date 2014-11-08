@@ -48,13 +48,19 @@ CGFloat const titleBarHeight = 22.0f;
 												 name:TWVAutomaticReloadChangedNotification
 											   object:nil];
 	
+    // Broadcast my mouse position
+    [NSTimer scheduledTimerWithTimeInterval:.1
+                                     target:self
+                                   selector:@selector(broadcastMouse)
+                                   userInfo:nil
+                                    repeats:YES];
+    
+    // Update mouse position received
     [NSTimer scheduledTimerWithTimeInterval:.1
                                      target:self
                                    selector:@selector(moveMouse)
                                    userInfo:nil
                                     repeats:YES];
-    
-
     
 	return self;
 }
@@ -64,7 +70,7 @@ CGFloat const titleBarHeight = 22.0f;
     float x = [[theWebView stringByEvaluatingJavaScriptFromString: @"document.getElementById('x-coord').innerHTML"]floatValue]*screenRect.size.width;
     float y = [[theWebView stringByEvaluatingJavaScriptFromString: @"document.getElementById('y-coord').innerHTML"]floatValue]*screenRect.size.width;
 
-    NSLog(@"x %f, y %f",x,y);
+    NSLog(@"received mouse x %f, y %f",x,y);
     
     [NSAnimationContext runAnimationGroup:^(NSAnimationContext *context) {
         context.duration =1.0f;
@@ -72,13 +78,18 @@ CGFloat const titleBarHeight = 22.0f;
     } completionHandler:nil];
     
     CGRect frame = CGRectOffset(window.frame, x, y);
-
-    
-    
-
-    
-    
 }
+
+-(void)broadcastMouse{
+    
+    NSLog(@"my mouse x %f, y %f", [NSEvent mouseLocation].x, [NSEvent mouseLocation].y);
+    
+    // Normalize mouse position
+    
+    // Send mouse position w/ pubnub (published under chosen username?
+
+}
+
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
 	// Insert code here to initialize your application
 	NSLog(@"TransparentWebView app got launched ...");

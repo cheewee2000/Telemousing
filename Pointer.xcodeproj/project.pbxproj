@@ -7,13 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2B69B6691A0DADFC00F71553 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2B69B6681A0DADFC00F71553 /* Images.xcassets */; };
+		2B963B611A0DA8C3003BCB68 /* icon.icns in Resources */ = {isa = PBXBuildFile; fileRef = 2B963B601A0DA8C3003BCB68 /* icon.icns */; };
 		3FA25FFF0CCC34CD00502784 /* TransparentWebView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FA25FFE0CCC34CD00502784 /* TransparentWebView.m */; };
 		3FC6456B0CC89D21009F9DB0 /* WebViewWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FC6456A0CC89D21009F9DB0 /* WebViewWindow.m */; };
 		3FC645D40CC8B39B009F9DB0 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3FC645D30CC8B39B009F9DB0 /* WebKit.framework */; };
 		436BC475131715C7003F0603 /* PreferenceController.m in Sources */ = {isa = PBXBuildFile; fileRef = 436BC474131715C7003F0603 /* PreferenceController.m */; };
 		436BC48413171918003F0603 /* Preferences.xib in Resources */ = {isa = PBXBuildFile; fileRef = 436BC48313171918003F0603 /* Preferences.xib */; };
 		43D5811312C2735D000AEA60 /* TransparentWebViewAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 43D5811212C2735D000AEA60 /* TransparentWebViewAppDelegate.m */; };
-		43D5817612C414A4000AEA60 /* Icon.icns in Resources */ = {isa = PBXBuildFile; fileRef = 43D5817512C414A4000AEA60 /* Icon.icns */; };
 		8D11072A0486CEB800E47090 /* MainMenu.nib in Resources */ = {isa = PBXBuildFile; fileRef = 29B97318FDCFA39411CA2CEA /* MainMenu.nib */; };
 		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
@@ -26,6 +27,8 @@
 		29B97319FDCFA39411CA2CEA /* English */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = English; path = English.lproj/MainMenu.nib; sourceTree = "<group>"; };
 		29B97324FDCFA39411CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
+		2B69B6681A0DADFC00F71553 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = Pointer/Images.xcassets; sourceTree = "<group>"; };
+		2B963B601A0DA8C3003BCB68 /* icon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = icon.icns; sourceTree = "<group>"; };
 		3FA25FFD0CCC34CD00502784 /* TransparentWebView.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = TransparentWebView.h; sourceTree = "<group>"; };
 		3FA25FFE0CCC34CD00502784 /* TransparentWebView.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = TransparentWebView.m; sourceTree = "<group>"; };
 		3FC645690CC89D21009F9DB0 /* WebViewWindow.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = WebViewWindow.h; sourceTree = "<group>"; };
@@ -36,9 +39,8 @@
 		436BC48313171918003F0603 /* Preferences.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = Preferences.xib; sourceTree = "<group>"; };
 		43D5811112C2735D000AEA60 /* TransparentWebViewAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransparentWebViewAppDelegate.h; sourceTree = "<group>"; };
 		43D5811212C2735D000AEA60 /* TransparentWebViewAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransparentWebViewAppDelegate.m; sourceTree = "<group>"; };
-		43D5817512C414A4000AEA60 /* Icon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = Icon.icns; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
-		8D1107320486CEB800E47090 /* TransparentWebView.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TransparentWebView.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		8D1107320486CEB800E47090 /* Pointer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Pointer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -90,7 +92,7 @@
 		19C28FACFE9D520D11CA2CBB /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				8D1107320486CEB800E47090 /* TransparentWebView.app */,
+				8D1107320486CEB800E47090 /* Pointer.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -118,7 +120,8 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				43D5817512C414A4000AEA60 /* Icon.icns */,
+				2B69B6681A0DADFC00F71553 /* Images.xcassets */,
+				2B963B601A0DA8C3003BCB68 /* icon.icns */,
 				8D1107310486CEB800E47090 /* Info.plist */,
 				29B97318FDCFA39411CA2CEA /* MainMenu.nib */,
 				436BC48313171918003F0603 /* Preferences.xib */,
@@ -139,9 +142,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		8D1107260486CEB800E47090 /* TransparentWebView */ = {
+		8D1107260486CEB800E47090 /* Pointer */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = C01FCF4A08A954540054247B /* Build configuration list for PBXNativeTarget "TransparentWebView" */;
+			buildConfigurationList = C01FCF4A08A954540054247B /* Build configuration list for PBXNativeTarget "Pointer" */;
 			buildPhases = (
 				8D1107290486CEB800E47090 /* Resources */,
 				8D11072C0486CEB800E47090 /* Sources */,
@@ -151,10 +154,10 @@
 			);
 			dependencies = (
 			);
-			name = TransparentWebView;
+			name = Pointer;
 			productInstallPath = "$(HOME)/Applications";
 			productName = WebViewTest;
-			productReference = 8D1107320486CEB800E47090 /* TransparentWebView.app */;
+			productReference = 8D1107320486CEB800E47090 /* Pointer.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -164,7 +167,7 @@
 			isa = PBXProject;
 			attributes = {
 			};
-			buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXProject "TransparentWebView" */;
+			buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXProject "Pointer" */;
 			compatibilityVersion = "Xcode 2.4";
 			developmentRegion = English;
 			hasScannedForEncodings = 1;
@@ -178,7 +181,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				8D1107260486CEB800E47090 /* TransparentWebView */,
+				8D1107260486CEB800E47090 /* Pointer */,
 			);
 		};
 /* End PBXProject section */
@@ -189,7 +192,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				8D11072A0486CEB800E47090 /* MainMenu.nib in Resources */,
-				43D5817612C414A4000AEA60 /* Icon.icns in Resources */,
+				2B69B6691A0DADFC00F71553 /* Images.xcassets in Resources */,
+				2B963B611A0DA8C3003BCB68 /* icon.icns in Resources */,
 				436BC48413171918003F0603 /* Preferences.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -227,6 +231,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				COPY_PHASE_STRIP = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
@@ -234,7 +239,7 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(HOME)/Applications";
-				PRODUCT_NAME = TransparentWebView;
+				PRODUCT_NAME = Pointer;
 				WRAPPER_EXTENSION = app;
 				ZERO_LINK = YES;
 			};
@@ -244,11 +249,12 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				GCC_MODEL_TUNING = G5;
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(HOME)/Applications";
-				PRODUCT_NAME = TransparentWebView;
+				PRODUCT_NAME = Pointer;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
@@ -280,7 +286,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		C01FCF4A08A954540054247B /* Build configuration list for PBXNativeTarget "TransparentWebView" */ = {
+		C01FCF4A08A954540054247B /* Build configuration list for PBXNativeTarget "Pointer" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				C01FCF4B08A954540054247B /* Debug */,
@@ -289,7 +295,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		C01FCF4E08A954540054247B /* Build configuration list for PBXProject "TransparentWebView" */ = {
+		C01FCF4E08A954540054247B /* Build configuration list for PBXProject "Pointer" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				C01FCF4F08A954540054247B /* Debug */,
