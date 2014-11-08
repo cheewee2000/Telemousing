@@ -39,6 +39,9 @@ extern NSString *const TWVMainTransparantWindowFrameKey;
 	PreferenceController *preferenceController;
 	NSTimer *automaticReloadTimer;
     NSRect screenRect;
+    
+    
+    float followX ,followY;
 
 }
 

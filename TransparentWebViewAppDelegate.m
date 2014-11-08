@@ -72,10 +72,15 @@ CGFloat const titleBarHeight = 22.0f;
                                    userInfo:nil
                                     repeats:YES];
     
+    //set window size
     NSRect newFrame = window.frame;
     newFrame.size.height = 30;
     newFrame.size.width = 20;
     [window setFrame:newFrame display:YES];
+    
+    
+
+    
     
 	return self;
 }
@@ -83,18 +88,17 @@ CGFloat const titleBarHeight = 22.0f;
 -(void)moveMouse{
     
 
-    
-    float x = [[theWebView stringByEvaluatingJavaScriptFromString: @"document.getElementById('x-coord').innerHTML"]floatValue]*screenRect.size.width;
-    float y = [[theWebView stringByEvaluatingJavaScriptFromString: @"document.getElementById('y-coord').innerHTML"]floatValue]*screenRect.size.width;
+    followX = [[theWebView stringByEvaluatingJavaScriptFromString: @"document.getElementById('x-coord').innerHTML"]floatValue]*screenRect.size.width;
+    followY = [[theWebView stringByEvaluatingJavaScriptFromString: @"document.getElementById('y-coord').innerHTML"]floatValue]*screenRect.size.width;
 
-    NSLog(@"received mouse x %f, y %f",x,y);
+    NSLog(@"received mouse x %f, y %f",followX,followY);
+
+    NSRect frame = [window frame];
+    frame.origin.x=followX;
+    frame.origin.y=followY;
     
-    [NSAnimationContext runAnimationGroup:^(NSAnimationContext *context) {
-        context.duration =1.0f;
-        [window setFrameOrigin:CGPointMake(x,y)];
-    } completionHandler:nil];
-    
-    //CGRect frame = CGRectOffset(window.frame, x, y);
+    [window setFrame:frame display:YES animate:YES];
+
 }
 
 -(void)broadcastMouse{
