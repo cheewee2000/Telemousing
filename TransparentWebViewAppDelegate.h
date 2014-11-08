@@ -17,45 +17,64 @@ extern NSString *const TWVBorderlessWindowKey;
 extern NSString *const TWVDrawCroppedUnderTitleBarKey;
 extern NSString *const TWVMainTransparantWindowFrameKey;
 
-#if (MAC_OS_X_VERSION_MAX_ALLOWED <= MAC_OS_X_VERSION_10_5)
-@interface TransparentWebViewAppDelegate : NSObject {
-#else
+//#if (MAC_OS_X_VERSION_MAX_ALLOWED <= MAC_OS_X_VERSION_10_5)
+//@interface TransparentWebViewAppDelegate : NSObject {
+//#else
 @interface TransparentWebViewAppDelegate : NSObject <NSApplicationDelegate, NSWindowDelegate> {
-#endif
-    NSWindow *window;
-	WebView *theWebView;
+//#endif
+    NSWindow * window;
+	WebView *__weak theWebView;
 	
-	NSMenuItem *borderlessWindowMenuItem;
-	NSMenuItem *cropUnderTitleBarMenuItem;
+	NSMenuItem *__weak borderlessWindowMenuItem;
+	NSMenuItem *__weak cropUnderTitleBarMenuItem;
 	
-	NSWindow *locationSheet;
+	NSWindow *__weak locationSheet;
+    NSWindow *__weak usernameSheet;
+    NSWindow *__weak followSheet;
+
 	NSString *urlString;
-	
+	NSString *usernameString;
+    NSString *followString;
+    
 	PreferenceController *preferenceController;
 	NSTimer *automaticReloadTimer;
     NSRect screenRect;
 
 }
 
-@property (assign) IBOutlet NSWindow *window;
-@property (assign) IBOutlet WebView *theWebView;
+@property (strong) IBOutlet NSWindow *window;
+@property (weak) IBOutlet WebView *theWebView;
 
-@property (assign) IBOutlet NSMenuItem *borderlessWindowMenuItem;
-@property (assign) IBOutlet NSMenuItem *cropUnderTitleBarMenuItem;
+@property (weak) IBOutlet NSMenuItem *borderlessWindowMenuItem;
+@property (weak) IBOutlet NSMenuItem *cropUnderTitleBarMenuItem;
 
-@property (assign) IBOutlet NSWindow *locationSheet;
-@property (nonatomic, retain) NSString *urlString;
-	
-@property (nonatomic, retain) PreferenceController *preferenceController;
+@property (weak) IBOutlet NSWindow *locationSheet;
+@property (weak) IBOutlet NSWindow *usernameSheet;
+@property (weak) IBOutlet NSWindow *followSheet;
+
+@property (nonatomic, strong) NSString *urlString;
+@property (nonatomic, strong) NSString *usernameString;
+@property (nonatomic, strong) NSString *followString;
+
+@property (nonatomic, strong) PreferenceController *preferenceController;
 
 //- (IBAction)reloadPage:(id)sender;
 
 - (IBAction)showLocationSheet:(id)sender;
 - (IBAction)endLocationSheet:(id)sender;
 - (IBAction)cancelLocationSheet:(id)sender;
+    
+- (IBAction)showUsernameSheet:(id)sender;
+- (IBAction)endUsernameSheet:(id)sender;
+- (IBAction)cancelUsernameSheet:(id)sender;
+    
+- (IBAction)showFollowSheet:(id)sender;
+- (IBAction)endFollowSheet:(id)sender;
+- (IBAction)cancelFollowSheet:(id)sender;
 
-- (IBAction)toggleBorderlessWindow:(id)sender;
-- (IBAction)toggleCropUnderTitleBar:(id)sender;
+
+//- (IBAction)toggleBorderlessWindow:(id)sender;
+//- (IBAction)toggleCropUnderTitleBar:(id)sender;
 
 - (IBAction)showPreferencePanel:(id)sender;
 	

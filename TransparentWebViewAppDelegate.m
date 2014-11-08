@@ -15,6 +15,10 @@ NSString *const TWVBorderlessWindowKey = @"OpenBorderlessWindow";
 NSString *const TWVDrawCroppedUnderTitleBarKey = @"DrawCroppedUnderTitleBar";
 NSString *const TWVMainTransparantWindowFrameKey = @"MainTransparentWindow";
 
+NSString *const usernameKey = @"username";
+NSString *const followKey = @"follow";
+
+
 CGFloat const titleBarHeight = 22.0f;
 
 @implementation TransparentWebViewAppDelegate
@@ -22,18 +26,22 @@ CGFloat const titleBarHeight = 22.0f;
 @synthesize window, theWebView;
 @synthesize borderlessWindowMenuItem, cropUnderTitleBarMenuItem;
 @synthesize locationSheet, urlString;
+@synthesize usernameSheet, usernameString;
+@synthesize followSheet, followString;
+
 @synthesize preferenceController;
 
 
 - (id) init {
-	[super init];
+	if (!(self = [super init])) return nil;
 	
 	// Register the Defaults in the Preferences
 	NSMutableDictionary *defaultValues = [NSMutableDictionary dictionary];
 	
 	[defaultValues setObject:@"http://jonathanbobrow.com/telemouse/" forKey:TWVLocationUrlKey];
+    //[defaultValues setObject:@"http://google.com" forKey:TWVLocationUrlKey];
 	[defaultValues setObject:[NSNumber numberWithBool:YES] forKey:TWVBorderlessWindowKey];
-	[defaultValues setObject:[NSNumber numberWithBool:NO] forKey:TWVDrawCroppedUnderTitleBarKey];
+	[defaultValues setObject:[NSNumber numberWithBool:YES] forKey:TWVDrawCroppedUnderTitleBarKey];
 	[defaultValues setObject:[NSNumber numberWithBool:NO] forKey:TWVShouldAutomaticReloadKey];
 	[defaultValues setObject:[NSNumber numberWithInt:15] forKey:TWVAutomaticReloadIntervalKey];
 	
@@ -41,7 +49,9 @@ CGFloat const titleBarHeight = 22.0f;
 	
 	// Set the url from the Preferences file
 	self.urlString = [[NSUserDefaults standardUserDefaults] objectForKey:TWVLocationUrlKey];
-	
+    self.usernameString = [[NSUserDefaults standardUserDefaults] objectForKey:usernameKey];
+    self.followString = [[NSUserDefaults standardUserDefaults] objectForKey:followKey];
+
 	// Register for Preference Changes
 	[[NSNotificationCenter defaultCenter] addObserver:self
 											 selector:@selector(handleAutomaticReloadChange:)
@@ -62,10 +72,17 @@ CGFloat const titleBarHeight = 22.0f;
                                    userInfo:nil
                                     repeats:YES];
     
+    NSRect newFrame = window.frame;
+    newFrame.size.height = 30;
+    newFrame.size.width = 20;
+    [window setFrame:newFrame display:YES];
+    
 	return self;
 }
 
 -(void)moveMouse{
+    
+
     
     float x = [[theWebView stringByEvaluatingJavaScriptFromString: @"document.getElementById('x-coord').innerHTML"]floatValue]*screenRect.size.width;
     float y = [[theWebView stringByEvaluatingJavaScriptFromString: @"document.getElementById('y-coord').innerHTML"]floatValue]*screenRect.size.width;
@@ -77,7 +94,7 @@ CGFloat const titleBarHeight = 22.0f;
         [window setFrameOrigin:CGPointMake(x,y)];
     } completionHandler:nil];
     
-    CGRect frame = CGRectOffset(window.frame, x, y);
+    //CGRect frame = CGRectOffset(window.frame, x, y);
 }
 
 -(void)broadcastMouse{
@@ -150,27 +167,66 @@ CGFloat const titleBarHeight = 22.0f;
 	   didEndSelector:NULL
 		  contextInfo:NULL];
 }
-
-
 - (IBAction)endLocationSheet:(id)sender {
-	
-	// Return to normal event handling and hide the sheet
-	[NSApp endSheet:locationSheet];
-	[locationSheet orderOut:sender];
-	
-	// Save the location url in the Preferences
-	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-	[defaults setObject:self.urlString forKey:TWVLocationUrlKey];
-	
-	NSLog(@"Load the url: %@", urlString);
-	[self loadUrlString:self.urlString IntoWebView:self.theWebView];
+    
+    // Return to normal event handling and hide the sheet
+    [NSApp endSheet:locationSheet];
+    [locationSheet orderOut:sender];
+    
+    // Save the location url in the Preferences
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    [defaults setObject:self.urlString forKey:TWVLocationUrlKey];
+    
+    NSLog(@"Load the url: %@", urlString);
+    [self loadUrlString:self.urlString IntoWebView:self.theWebView];
 }
 
 - (IBAction)cancelLocationSheet:(id)sender {
-	// Return to normal event handling and hide the sheet
-	[NSApp endSheet:locationSheet];
-	[locationSheet orderOut:sender];
+    // Return to normal event handling and hide the sheet
+    [NSApp endSheet:locationSheet];
+    [locationSheet orderOut:sender];
 }
+
+- (IBAction)showUsernameSheet:(id)sender {
+    [NSApp beginSheet:usernameSheet
+       modalForWindow:window
+        modalDelegate:nil
+       didEndSelector:NULL
+          contextInfo:NULL];
+}
+- (IBAction)endUsernameSheet:(id)sender {
+    [NSApp endSheet:usernameSheet];
+    [usernameSheet orderOut:sender];
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    [defaults setObject:self.usernameString forKey:usernameKey];
+}
+
+- (IBAction)cancelUsernameSheet:(id)sender {
+    [NSApp endSheet:usernameSheet];
+    [usernameSheet orderOut:sender];
+}
+
+- (IBAction)showFollowSheet:(id)sender {
+    [NSApp beginSheet:followSheet
+       modalForWindow:window
+        modalDelegate:nil
+       didEndSelector:NULL
+          contextInfo:NULL];
+}
+- (IBAction)endFollowSheet:(id)sender {
+    [NSApp endSheet:followSheet];
+    [followSheet orderOut:sender];
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    [defaults setObject:self.followString forKey:followKey];
+}
+
+- (IBAction)cancelFollowSheet:(id)sender {
+    [NSApp endSheet:followSheet];
+    [followSheet orderOut:sender];
+}
+
+
+
 
 /*
  * The method to load any url string into a web view of choice
@@ -195,7 +251,6 @@ CGFloat const titleBarHeight = 22.0f;
 	if (self.preferenceController == nil) {
 		PreferenceController *prefController = [[PreferenceController alloc] init];
 		self.preferenceController = prefController;
-		[prefController release];
 	}
 	NSLog(@"showing %@", preferenceController);
 	[preferenceController showWindow:self];
@@ -212,7 +267,6 @@ CGFloat const titleBarHeight = 22.0f;
 	// Invalidate the previousTimer
 	if (automaticReloadTimer != nil) {
 		[automaticReloadTimer invalidate];
-		[automaticReloadTimer release];
 		automaticReloadTimer = nil;
 	}
 	
@@ -220,11 +274,11 @@ CGFloat const titleBarHeight = 22.0f;
 	if ( [[NSUserDefaults standardUserDefaults] boolForKey:TWVShouldAutomaticReloadKey] ) {
 		// Create a new timer
 		int reloadInterval = [[[NSUserDefaults standardUserDefaults] objectForKey:TWVAutomaticReloadIntervalKey] intValue];
-		automaticReloadTimer = [[NSTimer scheduledTimerWithTimeInterval:reloadInterval
+		automaticReloadTimer = [NSTimer scheduledTimerWithTimeInterval:reloadInterval
 																 target:self
 															   selector:@selector(reloadWebView:)
 															   userInfo:nil
-																repeats:YES] retain];
+																repeats:YES];
 	}
 }
 
@@ -239,6 +293,7 @@ CGFloat const titleBarHeight = 22.0f;
 #pragma mark -
 #pragma mark Borderless Window
 
+/*
 - (IBAction)toggleBorderlessWindow:(id)sender {
 	
 	// Toggle the borderless Window state:
@@ -292,6 +347,7 @@ CGFloat const titleBarHeight = 22.0f;
 	// Perform the content cropping change
 	[self cropContentUnderTitleBar:newState];
 }
+*/
 
 
 /*
@@ -299,19 +355,19 @@ CGFloat const titleBarHeight = 22.0f;
  */
 - (void)setBorderlessWindowMenuItemState:(BOOL)booleanState {
 	
-	if (booleanState) {
-		// YES BorderlessWindow
-		NSLog(@"Set borderless!");
-		[borderlessWindowMenuItem setState:NSOnState];
-		[borderlessWindowMenuItem setTitle:@"Hide Borderless"];
-		[cropUnderTitleBarMenuItem setEnabled:NO];
-	} else {
-		// NO BorderlessWindow
-		NSLog(@"Set NOT borderless!");
-		[borderlessWindowMenuItem setState:NSOffState];
-		[borderlessWindowMenuItem setTitle:@"Show Borderless"];
-		[cropUnderTitleBarMenuItem setEnabled:YES];
-	}
+//	if (booleanState) {
+//		// YES BorderlessWindow
+//		NSLog(@"Set borderless!");
+//		[borderlessWindowMenuItem setState:NSOnState];
+//		[borderlessWindowMenuItem setTitle:@"Hide Borderless"];
+//		[cropUnderTitleBarMenuItem setEnabled:NO];
+//	} else {
+//		// NO BorderlessWindow
+//		NSLog(@"Set NOT borderless!");
+//		[borderlessWindowMenuItem setState:NSOffState];
+//		[borderlessWindowMenuItem setTitle:@"Show Borderless"];
+//		[cropUnderTitleBarMenuItem setEnabled:YES];
+//	}
 }
 
 - (void)setCropUnderTitleBarMenuItemState:(BOOL)booleanState {
@@ -350,7 +406,7 @@ CGFloat const titleBarHeight = 22.0f;
 
 	// Set the properties (as also set in Interface Builder)
 	[window setContentView:[oldWindow contentView]];
-	[window setTitle:@"Transparent Web View"];
+	[window setTitle:@"Pointer"];
 	[window setFrameAutosaveName:TWVMainTransparantWindowFrameKey];
 
 	// Restore the frame from the one save above
@@ -406,12 +462,8 @@ CGFloat const titleBarHeight = 22.0f;
 #pragma mark -
 
 - (void)dealloc {
-	[urlString release];
-	[preferenceController release];
 	[automaticReloadTimer invalidate];
-	[automaticReloadTimer release];
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
-	[super dealloc];
 }
 
 @end
