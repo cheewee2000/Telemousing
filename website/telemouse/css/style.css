@@ -1,0 +1,9 @@
+.telemouse{
+  width: 16px;
+  height: 26px;
+  background-image: -webkit-image-set( url(../img/telemouse.png) 1x, url(../img/telemouse@2x.png) 2x);
+}
+
+.hidden{
+	display: none;
+}

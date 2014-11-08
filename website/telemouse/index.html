@@ -1,0 +1,37 @@
+<html>
+	<head>
+		<title>telemouse</title>
+		<link rel="stylesheet" href="css/style.css" type="text/css">
+		<script src="https://cdn.pubnub.com/pubnub.min.js"></script>
+	</head>
+	<body>
+	 
+		<!-- Instantiate PubNub -->
+		<script type="text/javascript">
+		 
+		var PUBNUB_demo = PUBNUB.init({
+		    publish_key: 'pub-c-022feac7-95c3-46e1-a272-28074a6a94ce',
+		    subscribe_key: 'sub-c-d560da0c-669b-11e4-984a-02ee2ddab7fe'
+		});
+
+		//Subscribe to the demo_tutorial channel
+		PUBNUB_demo.subscribe({
+		  channel: 'telemouse',
+		  message: function(m){console.log(m)}
+		});
+		
+		// Publish a simple message to the demo_tutorial channel
+		PUBNUB_demo.publish({
+		    channel: 'telemouse',
+		    message: {"user":"1"}
+		    message: {"x-coord":".255"}
+		    message: {"y-coord":".255"}
+		});
+		</script>
+		
+		<div class="telemouse"></div>
+		<!--<img src="img/telemouse.png"/>-->
+		<div id="x-coord" class="hidden">.1</div>
+		<div id="y-coord" class="hidden">.1</div>
+	</body>
+</html>
