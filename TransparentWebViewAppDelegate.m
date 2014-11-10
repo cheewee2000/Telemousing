@@ -69,11 +69,11 @@ CGFloat const titleBarHeight = 22.0f;
                                     repeats:YES];
     
     // Update mouse position received
-    [NSTimer scheduledTimerWithTimeInterval:.1
-                                     target:self
-                                   selector:@selector(moveMouse)
-                                   userInfo:nil
-                                    repeats:YES];
+//    [NSTimer scheduledTimerWithTimeInterval:.1
+//                                     target:self
+//                                   selector:@selector(moveMouse)
+//                                   userInfo:nil
+//                                    repeats:YES];
     
     //set window size
     NSRect newFrame = window.frame;
@@ -81,7 +81,7 @@ CGFloat const titleBarHeight = 22.0f;
     newFrame.size.width = 20;
     [window setFrame:newFrame display:YES];
     
-    
+    [self subscribePubNub];
     
 	return self;
 }
@@ -99,6 +99,26 @@ CGFloat const titleBarHeight = 22.0f;
     [PubNub setConfiguration: configuration];
     
     [PubNub connect];
+}
+-(void)subscribePubNub{
+    //Define a channel
+    PNChannel *channel = [PNChannel channelWithName:self.followString shouldObservePresence:YES];
+    
+    //Subscribe to the channel
+    [PubNub subscribeOnChannel:channel];
+    
+    
+}
+
+- (void)pubnubClient:(PubNub *)client didReceiveMessage:(PNMessage *)message {
+    NSLog( @"%@", [NSString stringWithFormat:@"received: %@", message.message] );
+    
+    NSRect frame = [window frame];
+    frame.origin.x=followX;
+    frame.origin.y=followY;
+    
+    [window setFrame:frame display:YES animate:YES];
+    
 }
 
 -(void)moveMouse{
