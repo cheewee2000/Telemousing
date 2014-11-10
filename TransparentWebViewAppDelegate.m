@@ -100,7 +100,11 @@ CGFloat const titleBarHeight = 22.0f;
 -(void)subscribePubNub{
     //Define a channel
     PNChannel *channel = [PNChannel channelWithName:self.followString shouldObservePresence:YES];
-    [PubNub subscribeOnChannel:channel];
+    [PubNub subscribeOnChannel:channel
+     withCompletionHandlingBlock:^(PNSubscriptionProcessState state, NSArray *blah, PNError *error) {
+         NSLog(@"error %@", error);
+     }
+     ];
 }
 
 - (void)pubnubClient:(PubNub *)client didReceiveMessage:(PNMessage *)message {
