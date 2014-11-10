@@ -119,7 +119,8 @@ CGFloat const titleBarHeight = 22.0f;
 
 -(void)broadcastMouse{
     
-    NSLog(@"my mouse x %f, y %f", [NSEvent mouseLocation].x, [NSEvent mouseLocation].y);
+    // log data
+    NSLog(@"%@ x %f, y %f",[self usernameString], [NSEvent mouseLocation].x, [NSEvent mouseLocation].y);
     
     // Normalize mouse position
     CGFloat x = [NSEvent mouseLocation].x / screenRect.size.width;
@@ -133,7 +134,7 @@ CGFloat const titleBarHeight = 22.0f;
     
     //Publish on the channel
     TransparentWebViewAppDelegate *weakSelf = self;
-    [PubNub sendMessage:@{@"username":@"default",@"x":xs, @"y":ys}
+    [PubNub sendMessage:@{@"username":[self usernameString],@"x":xs, @"y":ys}
               toChannel:[PNChannel channelWithName:@"telemouse"]
     withCompletionBlock:^(PNMessageState sendingSate, id data) {
         
