@@ -119,6 +119,7 @@ CGFloat const titleBarHeight = 22.0f;
     followX=[[json objectForKey:@"x"]floatValue];
     followY=[[json objectForKey:@"y"]floatValue];
     
+    NSLog(@"received mouse x %f, y %f",followX,followY);
     NSRect frame = [window frame];
     frame.origin.x=followX;
     frame.origin.y=followY;
