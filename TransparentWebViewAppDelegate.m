@@ -111,20 +111,18 @@ CGFloat const titleBarHeight = 22.0f;
 }
 
 - (void)pubnubClient:(PubNub *)client didReceiveMessage:(PNMessage *)message {
-    NSLog( @"%@", [NSString stringWithFormat:@"received: %@", message.message] );
+    //NSLog( @"%@", [NSString stringWithFormat:@"received: %@", message.message] );
     followX=[[message.message objectForKey:@"x"]floatValue];
     followY=[[message.message objectForKey:@"y"]floatValue];
 
-    NSLog(@"received mouse x %f, y %f",followX,followY);
-
-    
+    NSLog(@"received x %f, y %f",followX,followY);
 }
 
 -(void)moveMouse{
     
     NSRect frame = [window frame];
-    frame.origin.x=followX*window.frame.size.width;
-    frame.origin.y=followY*window.frame.size.height;
+    frame.origin.x=followX*screenRect.size.width;
+    frame.origin.y=followY*screenRect.size.height;
     
     [window setFrame:frame display:YES animate:YES];
 
@@ -140,7 +138,7 @@ CGFloat const titleBarHeight = 22.0f;
     CGFloat y = [NSEvent mouseLocation].y / screenRect.size.height;
     
     // Send mouse position w/ pubnub (published under chosen username?
-    //NSLog(@"normalized x %f, y %f", x, y);
+    NSLog(@"sending x %f, y %f", x, y);
     
     NSString *xs = [NSString stringWithFormat:@"%f", x];
     NSString *ys = [NSString stringWithFormat:@"%f", y];
