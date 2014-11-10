@@ -112,6 +112,12 @@ CGFloat const titleBarHeight = 22.0f;
 
 - (void)pubnubClient:(PubNub *)client didReceiveMessage:(PNMessage *)message {
     NSLog( @"%@", [NSString stringWithFormat:@"received: %@", message.message] );
+
+    NSData *data = [[NSString stringWithFormat:@"%@", message.message] dataUsingEncoding:NSUTF8StringEncoding];
+    id json = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+
+    followX=[[json objectForKey:@"x"]floatValue];
+    followY=[[json objectForKey:@"y"]floatValue];
     
     NSRect frame = [window frame];
     frame.origin.x=followX;
@@ -121,33 +127,33 @@ CGFloat const titleBarHeight = 22.0f;
     
 }
 
--(void)moveMouse{
-    
-
-    followX = [[theWebView stringByEvaluatingJavaScriptFromString: @"document.getElementById('x-coord').innerHTML"]floatValue]*screenRect.size.width;
-    followY = [[theWebView stringByEvaluatingJavaScriptFromString: @"document.getElementById('y-coord').innerHTML"]floatValue]*screenRect.size.width;
-
-    NSLog(@"received mouse x %f, y %f",followX,followY);
-
-    NSRect frame = [window frame];
-    frame.origin.x=followX;
-    frame.origin.y=followY;
-    
-    [window setFrame:frame display:YES animate:YES];
-
-}
+//-(void)moveMouse{
+//    
+//
+//    followX = [[theWebView stringByEvaluatingJavaScriptFromString: @"document.getElementById('x-coord').innerHTML"]floatValue]*screenRect.size.width;
+//    followY = [[theWebView stringByEvaluatingJavaScriptFromString: @"document.getElementById('y-coord').innerHTML"]floatValue]*screenRect.size.width;
+//
+//    NSLog(@"received mouse x %f, y %f",followX,followY);
+//
+//    NSRect frame = [window frame];
+//    frame.origin.x=followX;
+//    frame.origin.y=followY;
+//    
+//    [window setFrame:frame display:YES animate:YES];
+//
+//}
 
 -(void)broadcastMouse{
     
     // log data
-    NSLog(@"%@ x %f, y %f",[self usernameString], [NSEvent mouseLocation].x, [NSEvent mouseLocation].y);
+    //NSLog(@"%@ x %f, y %f",[self usernameString], [NSEvent mouseLocation].x, [NSEvent mouseLocation].y);
     
     // Normalize mouse position
     CGFloat x = [NSEvent mouseLocation].x / screenRect.size.width;
     CGFloat y = [NSEvent mouseLocation].y / screenRect.size.height;
     
     // Send mouse position w/ pubnub (published under chosen username?
-    NSLog(@"normalized x %f, y %f", x, y);
+    //NSLog(@"normalized x %f, y %f", x, y);
     
     NSString *xs = [NSString stringWithFormat:@"%f", x];
     NSString *ys = [NSString stringWithFormat:@"%f", y];
