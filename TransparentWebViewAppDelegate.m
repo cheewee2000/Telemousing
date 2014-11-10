@@ -48,6 +48,9 @@ CGFloat const titleBarHeight = 22.0f;
 												 name:TWVAutomaticReloadChangedNotification
 											   object:nil];
 	
+    // Setup PubNub
+    [self initPubNub];
+    
     // Broadcast my mouse position
     [NSTimer scheduledTimerWithTimeInterval:.1
                                      target:self
@@ -63,6 +66,21 @@ CGFloat const titleBarHeight = 22.0f;
                                     repeats:YES];
     
 	return self;
+}
+
+-(void)initPubNub{
+    
+    NSString *origin = @"pubsub.pubnub.com";
+    NSString *publishKey = @"pub-c-022feac7-95c3-46e1-a272-28074a6a94ce";
+    NSString *subscribeKey = @"sub-c-d560da0c-669b-11e4-984a-02ee2ddab7fe";
+    NSString *secretKey = @"sec-c-ZWJmZmI0NzAtNTU2My00Mjg3LTgyZTgtZmMzNDdjZjhlZjI1";
+    NSString *authorizationKey = @"";
+
+    [PubNub setDelegate: self];
+    PNConfiguration *configuration = [PNConfiguration configurationForOrigin: origin publishKey: publishKey subscribeKey: subscribeKey secretKey: secretKey authorizationKey: authorizationKey];
+    [PubNub setConfiguration: configuration];
+    
+    [PubNub connect];
 }
 
 -(void)moveMouse{
@@ -85,16 +103,48 @@ CGFloat const titleBarHeight = 22.0f;
     NSLog(@"my mouse x %f, y %f", [NSEvent mouseLocation].x, [NSEvent mouseLocation].y);
     
     // Normalize mouse position
+    CGFloat x = [NSEvent mouseLocation].x / screenRect.size.width;
+    CGFloat y = [NSEvent mouseLocation].y / screenRect.size.height;
     
     // Send mouse position w/ pubnub (published under chosen username?
-
+    NSLog(@"normalized x %f, y %f", x, y);
+    
+    NSString *xs = [NSString stringWithFormat:@"%f", x];
+    NSString *ys = [NSString stringWithFormat:@"%f", y];
+    
+    //Publish on the channel
+    TransparentWebViewAppDelegate *weakSelf = self;
+    [PubNub sendMessage:@{@"username":@"default",@"x":xs, @"y":ys}
+              toChannel:[PNChannel channelWithName:@"telemouse"]
+    withCompletionBlock:^(PNMessageState sendingSate, id data) {
+        
+        switch (sendingSate) {
+            case PNMessageSending:
+                
+                PNLog(PNLogGeneralLevel, weakSelf, @"Sending message: %@", data);
+                break;
+            case PNMessageSent:
+                
+                PNLog(PNLogGeneralLevel, weakSelf, @"Message sent: %@", data);
+                break;
+            case PNMessageSendingError:
+                
+                PNLog(PNLogGeneralLevel, weakSelf, @"Message sending error: %@", data);
+                break;
+        }
+    }];
 }
+
+
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
 	// Insert code here to initialize your application
 	NSLog(@"TransparentWebView app got launched ...");
 	[self loadUrlString:self.urlString IntoWebView:self.theWebView];
-	
+
+    // PubNub init
+    [PubNub setDelegate:self];
+    
 	// Deal with the borderless and crop under title bar settings
 	BOOL borderlessState = [[[NSUserDefaults standardUserDefaults] objectForKey:TWVBorderlessWindowKey] boolValue];
 	BOOL cropUnderTitleState = [[[NSUserDefaults standardUserDefaults] objectForKey:TWVDrawCroppedUnderTitleBarKey] boolValue];

@@ -1,0 +1,16 @@
+//
+//  Pointer.pch
+//  Pointer
+//
+//  Created by Jonathan Bobrow on 11/9/14.
+//
+//
+
+#ifndef Pointer_Pointer_pch
+#define Pointer_Pointer_pch
+
+// Include any system framework and library headers here that should be included in all compilation units.
+// You will also need to set the Prefix Header build setting of one or more of your targets to reference this file.
+ #import "PNImports.h"
+
+#endif
