@@ -64,7 +64,7 @@ extern NSString *const TWVMainTransparantWindowFrameKey;
 - (IBAction)cancelFollowSheet:(id)sender;
 
 - (IBAction)showPreferencePanel:(id)sender;
-//- (void)setBorderlessWindowMenuItemState:(BOOL)booleanState;
+	- (void)setBorderlessWindowMenuItemState:(BOOL)booleanState;
 - (void)setCropUnderTitleBarMenuItemState:(BOOL)booleanState;
 - (void)replaceWindowWithBorderlessWindow:(BOOL)borderlessFlag WithContentRect:(NSRect)contentRect;
 //- (void)cropContentUnderTitleBar:(BOOL)cropUnderTitleFlag;
