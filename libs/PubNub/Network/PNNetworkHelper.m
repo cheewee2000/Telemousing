@@ -167,7 +167,7 @@ static NSString * kPNWLANServiceSetIdentifierKey = @"SSID";
     information = interfaceInformation;
 #else
     #if MAC_OS_X_VERSION_MIN_REQUIRED >= 1060
-        information = [CWInterface interface];
+        information = [CWWiFiClient interfaceNames];
     #endif
 #endif
 

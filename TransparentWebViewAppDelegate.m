@@ -481,7 +481,7 @@ CGFloat const titleBarHeight = 22.0f;
 	[(WebViewWindow *)window setDrawsBackgroundSettings];
 	
  
-    window.alphaValue=.5;
+    window.alphaValue=.8;
     
     
 	// Close the old window

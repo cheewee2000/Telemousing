@@ -46,7 +46,7 @@
 			<object class="NSWindowTemplate" id="259226951">
 				<int key="NSWindowStyleMask">3</int>
 				<int key="NSWindowBacking">2</int>
-				<string key="NSWindowRect">{{50, 50}, {36, 36}}</string>
+				<string key="NSWindowRect">{{50, 50}, {24, 24}}</string>
 				<int key="NSWTFlags">1886917632</int>
 				<string key="NSWindowTitle">Transparent Web View</string>
 				<string key="NSWindowClass">WebViewWindow</string>
@@ -54,8 +54,8 @@
 					<characters key="NS.bytes">View</characters>
 				</object>
 				<nil key="NSUserInterfaceItemIdentifier"/>
-				<string key="NSWindowContentMaxSize">{36, 36}</string>
-				<string key="NSWindowContentMinSize">{36, 36}</string>
+				<string key="NSWindowContentMaxSize">{24, 24}</string>
+				<string key="NSWindowContentMinSize">{24, 24}</string>
 				<object class="NSView" key="NSWindowView" id="503972351">
 					<reference key="NSNextResponder"/>
 					<int key="NSvFlags">274</int>
@@ -71,10 +71,9 @@
 								<string>NeXT Encapsulated PostScript v1.2 pasteboard type</string>
 								<string>NeXT TIFF v4.0 pasteboard type</string>
 							</set>
-							<string key="NSFrameSize">{36, 36}</string>
+							<string key="NSFrameSize">{24, 24}</string>
 							<reference key="NSSuperview" ref="503972351"/>
 							<reference key="NSWindow"/>
-							<reference key="NSNextKeyView"/>
 							<string key="NSReuseIdentifierKey">_NS:9</string>
 							<string key="NSHuggingPriority">{251, 251}</string>
 							<bool key="NSEnabled">YES</bool>
@@ -83,7 +82,7 @@
 								<int key="NSCellFlags2">33554432</int>
 								<object class="NSCustomResource" key="NSContents">
 									<string key="NSClassName">NSImage</string>
-									<string key="NSResourceName">loginui_cursor_2x</string>
+									<string key="NSResourceName">telemouse</string>
 								</object>
 								<string key="NSCellIdentifier">_NS:9</string>
 								<int key="NSAlign">0</int>
@@ -95,7 +94,7 @@
 							<bool key="NSEditable">YES</bool>
 						</object>
 					</array>
-					<string key="NSFrameSize">{36, 36}</string>
+					<string key="NSFrameSize">{24, 24}</string>
 					<reference key="NSSuperview"/>
 					<reference key="NSWindow"/>
 					<reference key="NSNextKeyView" ref="741436160"/>
@@ -287,7 +286,7 @@
 						<object class="NSTextField" id="848268677">
 							<reference key="NSNextResponder" ref="283739287"/>
 							<int key="NSvFlags">299</int>
-							<string key="NSFrame">{{90.000001310029489, 38}, {260, 22}}</string>
+							<string key="NSFrame">{{90.000001797535788, 38}, {260, 22}}</string>
 							<reference key="NSSuperview" ref="283739287"/>
 							<reference key="NSWindow"/>
 							<reference key="NSNextKeyView" ref="303110400"/>
@@ -349,10 +348,9 @@
 						<object class="NSButton" id="160641088">
 							<reference key="NSNextResponder" ref="283739287"/>
 							<int key="NSvFlags">297</int>
-							<string key="NSFrame">{{257.00000131002946, 5}, {99, 32}}</string>
+							<string key="NSFrame">{{257.00000179753579, 5}, {99, 32}}</string>
 							<reference key="NSSuperview" ref="283739287"/>
 							<reference key="NSWindow"/>
-							<reference key="NSNextKeyView"/>
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSButtonCell" key="NSCell" id="544006091">
 								<int key="NSCellFlags">-2080374784</int>
@@ -418,7 +416,7 @@
 						<object class="NSTextField" id="129283474">
 							<reference key="NSNextResponder" ref="640275612"/>
 							<int key="NSvFlags">299</int>
-							<string key="NSFrame">{{90.00000131002956, 38}, {260, 22}}</string>
+							<string key="NSFrame">{{90.000001797535859, 38}, {260, 22}}</string>
 							<reference key="NSSuperview" ref="640275612"/>
 							<reference key="NSWindow"/>
 							<reference key="NSNextKeyView" ref="1020347811"/>
@@ -463,10 +461,9 @@
 						<object class="NSButton" id="831499852">
 							<reference key="NSNextResponder" ref="640275612"/>
 							<int key="NSvFlags">297</int>
-							<string key="NSFrame">{{257.00000131002957, 5}, {99, 32}}</string>
+							<string key="NSFrame">{{257.00000179753584, 5}, {99, 32}}</string>
 							<reference key="NSSuperview" ref="640275612"/>
 							<reference key="NSWindow"/>
-							<reference key="NSNextKeyView"/>
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSButtonCell" key="NSCell" id="174304610">
 								<int key="NSCellFlags">-2080374784</int>
@@ -1091,7 +1088,7 @@
 		<dictionary class="NSMutableDictionary" key="IBDocument.LastKnownImageSizes">
 			<string key="NSMenuCheckmark">{12, 12}</string>
 			<string key="NSMenuMixedState">{10, 2}</string>
-			<string key="loginui_cursor_2x">{48, 48}</string>
+			<string key="telemouse">{24, 24}</string>
 		</dictionary>
 	</data>
 </archive>
