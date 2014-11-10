@@ -128,9 +128,5 @@ NSString *const TWVAutomaticReloadChangedNotification = @"TWVautomaticReloadChan
 }
 
 
-- (void)dealloc {
-	[sliderDeltas release];
-	[super dealloc];
-}
 
 @end

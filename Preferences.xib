@@ -224,7 +224,7 @@
 					<string key="NSFrameSize">{600, 110}</string>
 					<reference key="NSNextKeyView" ref="938747861"/>
 				</object>
-				<string key="NSScreenRect">{{0, 0}, {1680, 1028}}</string>
+				<string key="NSScreenRect">{{0, 0}, {1680, 1027}}</string>
 				<string key="NSMinSize">{473, 132}</string>
 				<string key="NSMaxSize">{1280, 132}</string>
 				<string key="NSFrameAutosaveName">PreferencesPanel</string>
