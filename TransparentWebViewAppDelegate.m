@@ -69,11 +69,11 @@ CGFloat const titleBarHeight = 22.0f;
                                     repeats:YES];
     
     // Update mouse position received
-//    [NSTimer scheduledTimerWithTimeInterval:.1
-//                                     target:self
-//                                   selector:@selector(moveMouse)
-//                                   userInfo:nil
-//                                    repeats:YES];
+    [NSTimer scheduledTimerWithTimeInterval:.1
+                                     target:self
+                                   selector:@selector(moveMouse)
+                                   userInfo:nil
+                                    repeats:YES];
     
     //set window size
     NSRect newFrame = window.frame;
@@ -112,37 +112,23 @@ CGFloat const titleBarHeight = 22.0f;
 
 - (void)pubnubClient:(PubNub *)client didReceiveMessage:(PNMessage *)message {
     NSLog( @"%@", [NSString stringWithFormat:@"received: %@", message.message] );
+    followX=[[message.message objectForKey:@"x"]floatValue];
+    followY=[[message.message objectForKey:@"y"]floatValue];
 
-    NSData *data = [[NSString stringWithFormat:@"%@", message.message] dataUsingEncoding:NSUTF8StringEncoding];
-    id json = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
-
-    followX=[[json objectForKey:@"x"]floatValue];
-    followY=[[json objectForKey:@"y"]floatValue];
-    
     NSLog(@"received mouse x %f, y %f",followX,followY);
-    NSRect frame = [window frame];
-    frame.origin.x=followX;
-    frame.origin.y=followY;
-    
-    [window setFrame:frame display:YES animate:YES];
+
     
 }
 
-//-(void)moveMouse{
-//    
-//
-//    followX = [[theWebView stringByEvaluatingJavaScriptFromString: @"document.getElementById('x-coord').innerHTML"]floatValue]*screenRect.size.width;
-//    followY = [[theWebView stringByEvaluatingJavaScriptFromString: @"document.getElementById('y-coord').innerHTML"]floatValue]*screenRect.size.width;
-//
-//    NSLog(@"received mouse x %f, y %f",followX,followY);
-//
-//    NSRect frame = [window frame];
-//    frame.origin.x=followX;
-//    frame.origin.y=followY;
-//    
-//    [window setFrame:frame display:YES animate:YES];
-//
-//}
+-(void)moveMouse{
+    
+    NSRect frame = [window frame];
+    frame.origin.x=followX*window.frame.size.width;
+    frame.origin.y=followY*window.frame.size.height;
+    
+    [window setFrame:frame display:YES animate:YES];
+
+}
 
 -(void)broadcastMouse{
     
@@ -219,7 +205,7 @@ CGFloat const titleBarHeight = 22.0f;
 	}
 	
 	// Start a timer if the Transparent Web View is set to reload with a given interval
-	[self resetAutomaticReloadTimer];
+	//[self resetAutomaticReloadTimer];
     
     NSArray *screenArray = [NSScreen screens];
     unsigned screenCount = [screenArray count];
