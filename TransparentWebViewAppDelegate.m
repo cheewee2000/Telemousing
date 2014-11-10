@@ -169,7 +169,7 @@ CGFloat const titleBarHeight = 22.0f;
 	BOOL cropUnderTitleState = [[[NSUserDefaults standardUserDefaults] objectForKey:TWVDrawCroppedUnderTitleBarKey] boolValue];
 	
 	// Set the state of the menu items
-	[self setBorderlessWindowMenuItemState:borderlessState];
+	//[self setBorderlessWindowMenuItemState:borderlessState];
 	[self setCropUnderTitleBarMenuItemState:cropUnderTitleState];
 	
 	// Make us the delegate of the Main Window
@@ -186,7 +186,7 @@ CGFloat const titleBarHeight = 22.0f;
 		[self replaceWindowWithBorderlessWindow:YES WithContentRect:borderlessContentRect];
 	} else {
 		if (cropUnderTitleState) {
-			[self cropContentUnderTitleBar:YES];
+			//[self cropContentUnderTitleBar:YES];
 		}
 	}
 	
@@ -215,6 +215,8 @@ CGFloat const titleBarHeight = 22.0f;
     
 }
 
+#pragma mark -
+#pragma mark Location Sheet
 
 - (IBAction)showUsernameSheet:(id)sender {
     [NSApp beginSheet:usernameSheet
@@ -255,7 +257,6 @@ CGFloat const titleBarHeight = 22.0f;
 }
 
 
-
 #pragma mark -
 #pragma mark Preferences Panel
 
@@ -271,31 +272,26 @@ CGFloat const titleBarHeight = 22.0f;
 
 
 
-#pragma mark -
-#pragma mark Borderless Window
-
-
-
 
 /*
  * Methods sets the UI properties according to the state of the Borderless Window
  */
-- (void)setBorderlessWindowMenuItemState:(BOOL)booleanState {
-	
-//	if (booleanState) {
-//		// YES BorderlessWindow
-//		NSLog(@"Set borderless!");
-//		[borderlessWindowMenuItem setState:NSOnState];
-//		[borderlessWindowMenuItem setTitle:@"Hide Borderless"];
-//		[cropUnderTitleBarMenuItem setEnabled:NO];
-//	} else {
-//		// NO BorderlessWindow
-//		NSLog(@"Set NOT borderless!");
-//		[borderlessWindowMenuItem setState:NSOffState];
-//		[borderlessWindowMenuItem setTitle:@"Show Borderless"];
-//		[cropUnderTitleBarMenuItem setEnabled:YES];
-//	}
-}
+//- (void)setBorderlessWindowMenuItemState:(BOOL)booleanState {
+//	
+////	if (booleanState) {
+////		// YES BorderlessWindow
+////		NSLog(@"Set borderless!");
+////		[borderlessWindowMenuItem setState:NSOnState];
+////		[borderlessWindowMenuItem setTitle:@"Hide Borderless"];
+////		[cropUnderTitleBarMenuItem setEnabled:NO];
+////	} else {
+////		// NO BorderlessWindow
+////		NSLog(@"Set NOT borderless!");
+////		[borderlessWindowMenuItem setState:NSOffState];
+////		[borderlessWindowMenuItem setTitle:@"Show Borderless"];
+////		[cropUnderTitleBarMenuItem setEnabled:YES];
+////	}
+//}
 
 - (void)setCropUnderTitleBarMenuItemState:(BOOL)booleanState {
 	
@@ -354,7 +350,25 @@ CGFloat const titleBarHeight = 22.0f;
 	[oldWindow close];
 }
 
-
+- (void)cropContentUnderTitleBar:(BOOL)cropUnderTitleFlag {
+	// Set the new frame of the web view
+	
+	// The origin.y is measured from the bottom, so we only have to set the height	
+	//		newFrame.origin.y = newFrame.origin.y + titleBarHeight;
+	
+	// Get the current frame of the WebView
+//	NSRect newFrame = theWebView.frame;
+//
+//	// Change the frame 
+//	if (cropUnderTitleFlag) {
+//		newFrame.size.height = newFrame.size.height + titleBarHeight;
+//	} else {
+//		newFrame.size.height = newFrame.size.height - titleBarHeight;
+//	}
+//	
+//	// Set the frame back to the web view
+//	[theWebView setFrame:newFrame];
+}
 
 #pragma mark -
 #pragma mark NSWindow Delegate Methods
