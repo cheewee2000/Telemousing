@@ -82,7 +82,6 @@ CGFloat const titleBarHeight = 22.0f;
 
 
 
-    [self subscribePubNub];
     
 	return self;
 }
@@ -216,6 +215,8 @@ CGFloat const titleBarHeight = 22.0f;
     followY=.3;
     [self moveMouse];
     
+    [self subscribePubNub];
+
     
 }
 
@@ -485,6 +486,9 @@ CGFloat const titleBarHeight = 22.0f;
 	[(WebViewWindow *)window setDrawsBackgroundSettings];
 	
  
+    followX=.1;
+    followY=.1;
+    [self moveMouse];
     window.alphaValue=.8;
     
     
