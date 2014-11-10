@@ -89,8 +89,9 @@
 		2B88125F1A1041FA00AA1D84 /* PNLoggerSymbols.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2B8812141A1041FA00AA1D84 /* PNLoggerSymbols.plist */; };
 		3FC6456B0CC89D21009F9DB0 /* WebViewWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FC6456A0CC89D21009F9DB0 /* WebViewWindow.m */; };
 		3FC645D40CC8B39B009F9DB0 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3FC645D30CC8B39B009F9DB0 /* WebKit.framework */; };
-		436BC48413171918003F0603 /* Preferences.xib in Resources */ = {isa = PBXBuildFile; fileRef = 436BC48313171918003F0603 /* Preferences.xib */; };
 		43D5811312C2735D000AEA60 /* TransparentWebViewAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 43D5811212C2735D000AEA60 /* TransparentWebViewAppDelegate.m */; };
+		44E561DE1A10826D00D69F9C /* PreferenceController.m in Sources */ = {isa = PBXBuildFile; fileRef = 44E561DD1A10826D00D69F9C /* PreferenceController.m */; };
+		44E561E01A10827300D69F9C /* Preferences.xib in Resources */ = {isa = PBXBuildFile; fileRef = 44E561DF1A10827300D69F9C /* Preferences.xib */; };
 		8D11072A0486CEB800E47090 /* MainMenu.nib in Resources */ = {isa = PBXBuildFile; fileRef = 29B97318FDCFA39411CA2CEA /* MainMenu.nib */; };
 		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
@@ -315,9 +316,11 @@
 		3FC645690CC89D21009F9DB0 /* WebViewWindow.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = WebViewWindow.h; sourceTree = "<group>"; };
 		3FC6456A0CC89D21009F9DB0 /* WebViewWindow.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = WebViewWindow.m; sourceTree = "<group>"; };
 		3FC645D30CC8B39B009F9DB0 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = /System/Library/Frameworks/WebKit.framework; sourceTree = "<absolute>"; };
-		436BC48313171918003F0603 /* Preferences.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = Preferences.xib; sourceTree = "<group>"; };
 		43D5811112C2735D000AEA60 /* TransparentWebViewAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransparentWebViewAppDelegate.h; sourceTree = "<group>"; };
 		43D5811212C2735D000AEA60 /* TransparentWebViewAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransparentWebViewAppDelegate.m; sourceTree = "<group>"; };
+		44E561DC1A10826D00D69F9C /* PreferenceController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PreferenceController.h; sourceTree = "<group>"; };
+		44E561DD1A10826D00D69F9C /* PreferenceController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PreferenceController.m; sourceTree = "<group>"; };
+		44E561DF1A10827300D69F9C /* Preferences.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Preferences.xib; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		8D1107320486CEB800E47090 /* Pointer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Pointer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -346,6 +349,8 @@
 				43D5811212C2735D000AEA60 /* TransparentWebViewAppDelegate.m */,
 				3FC645690CC89D21009F9DB0 /* WebViewWindow.h */,
 				3FC6456A0CC89D21009F9DB0 /* WebViewWindow.m */,
+				44E561DC1A10826D00D69F9C /* PreferenceController.h */,
+				44E561DD1A10826D00D69F9C /* PreferenceController.m */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -404,7 +409,7 @@
 				2B69B6681A0DADFC00F71553 /* Images.xcassets */,
 				8D1107310486CEB800E47090 /* Info.plist */,
 				29B97318FDCFA39411CA2CEA /* MainMenu.nib */,
-				436BC48313171918003F0603 /* Preferences.xib */,
+				44E561DF1A10827300D69F9C /* Preferences.xib */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -807,8 +812,8 @@
 			files = (
 				8D11072A0486CEB800E47090 /* MainMenu.nib in Resources */,
 				2B69B6691A0DADFC00F71553 /* Images.xcassets in Resources */,
+				44E561E01A10827300D69F9C /* Preferences.xib in Resources */,
 				2B88125F1A1041FA00AA1D84 /* PNLoggerSymbols.plist in Resources */,
-				436BC48413171918003F0603 /* Preferences.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -875,6 +880,7 @@
 				2B8812411A1041FA00AA1D84 /* NSMutableArray+PNAdditions.m in Sources */,
 				2B88123A1A1041FA00AA1D84 /* PNWhereNow.m in Sources */,
 				2B8812271A1041FA00AA1D84 /* PNResponseParser.m in Sources */,
+				44E561DE1A10826D00D69F9C /* PreferenceController.m in Sources */,
 				2B8812581A1041FA00AA1D84 /* PNWhereNowRequest.m in Sources */,
 				2B8812591A1041FA00AA1D84 /* PNMessagingChannel.m in Sources */,
 				2B88121F1A1041FA00AA1D84 /* PNChannelHistoryParser.m in Sources */,

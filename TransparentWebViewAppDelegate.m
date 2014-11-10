@@ -331,25 +331,7 @@ CGFloat const titleBarHeight = 22.0f;
 	[oldWindow close];
 }
 
-//- (void)cropContentUnderTitleBar:(BOOL)cropUnderTitleFlag {
-//	// Set the new frame of the web view
-//	
-//	// The origin.y is measured from the bottom, so we only have to set the height	
-//	//		newFrame.origin.y = newFrame.origin.y + titleBarHeight;
-//	
-//	// Get the current frame of the WebView
-////	NSRect newFrame = theWebView.frame;
-////
-////	// Change the frame 
-////	if (cropUnderTitleFlag) {
-////		newFrame.size.height = newFrame.size.height + titleBarHeight;
-////	} else {
-////		newFrame.size.height = newFrame.size.height - titleBarHeight;
-////	}
-////	
-////	// Set the frame back to the web view
-////	[theWebView setFrame:newFrame];
-//}
+
 
 #pragma mark -
 #pragma mark NSWindow Delegate Methods

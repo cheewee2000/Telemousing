@@ -53,7 +53,7 @@ extern NSString *const TWVMainTransparantWindowFrameKey;
 @property (nonatomic, strong) NSString *usernameString;
 @property (nonatomic, strong) NSString *followString;
 
-//@property (nonatomic, strong) PreferenceController *preferenceController;
+@property (nonatomic, strong) PreferenceController *preferenceController;
 
 - (IBAction)showUsernameSheet:(id)sender;
 - (IBAction)endUsernameSheet:(id)sender;
@@ -63,7 +63,7 @@ extern NSString *const TWVMainTransparantWindowFrameKey;
 - (IBAction)endFollowSheet:(id)sender;
 - (IBAction)cancelFollowSheet:(id)sender;
 
-//- (IBAction)showPreferencePanel:(id)sender;
+- (IBAction)showPreferencePanel:(id)sender;
 //- (void)setBorderlessWindowMenuItemState:(BOOL)booleanState;
 - (void)setCropUnderTitleBarMenuItemState:(BOOL)booleanState;
 - (void)replaceWindowWithBorderlessWindow:(BOOL)borderlessFlag WithContentRect:(NSRect)contentRect;
