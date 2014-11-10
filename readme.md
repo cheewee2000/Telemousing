@@ -17,4 +17,8 @@ Objective C - To make a native OS X app which can track mouse position continuou
 
 <a href="https://github.com/irlabs/TransparentWebView">Transparent Web Browser</a> - The TransparentWebView is a transparent web browser for Mac OS X. That means that if the visited web page is without a background color, or the background color is set to transparent, the complete browser window will be see-through. (Built w/ Objective C)
 
-<a href="http://pubnub.com">PubNub</a> - a simple tool for publishing realtime data and subscribing to that data seamlessl
+<a href="http://pubnub.com">PubNub</a> - a simple tool for publishing realtime data and subscribing to that data seamlessly
+
+<h4>Assets</h4>
+Path to the cursor icon: /System/Library/PrivateFrameworks/EFILogin.framework/Versions/A/Resources/EFIResourceBuilder.bundle/Contents/Resources/loginui_cursor@2x.png
+Thanks Apple :)
