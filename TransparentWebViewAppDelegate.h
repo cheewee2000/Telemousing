@@ -23,12 +23,12 @@ extern NSString *const TWVMainTransparantWindowFrameKey;
 @interface TransparentWebViewAppDelegate : NSObject <NSApplicationDelegate, NSWindowDelegate, PNDelegate> {
 #endif
     NSWindow *window;
-	WebView *__weak theWebView;
+	//WebView *__weak theWebView;
 	
 	NSMenuItem *__weak borderlessWindowMenuItem;
-	NSMenuItem *__weak cropUnderTitleBarMenuItem;
+	//NSMenuItem *__weak cropUnderTitleBarMenuItem;
 	
-	NSWindow *__weak locationSheet;
+	//NSWindow *__weak locationSheet;
     NSWindow *__weak usernameSheet;
     NSWindow *__weak followSheet;
 
@@ -49,16 +49,16 @@ extern NSString *const TWVMainTransparantWindowFrameKey;
 
     
 @property (strong) IBOutlet NSWindow *window;
-@property (weak) IBOutlet WebView *theWebView;
+//@property (weak) IBOutlet WebView *theWebView;
 
 @property (weak) IBOutlet NSMenuItem *borderlessWindowMenuItem;
 @property (weak) IBOutlet NSMenuItem *cropUnderTitleBarMenuItem;
 
-@property (weak) IBOutlet NSWindow *locationSheet;
+//@property (weak) IBOutlet NSWindow *locationSheet;
 @property (weak) IBOutlet NSWindow *usernameSheet;
 @property (weak) IBOutlet NSWindow *followSheet;
 
-@property (nonatomic, strong) NSString *urlString;
+//@property (nonatomic, strong) NSString *urlString;
 @property (nonatomic, strong) NSString *usernameString;
 @property (nonatomic, strong) NSString *followString;
 
@@ -66,10 +66,10 @@ extern NSString *const TWVMainTransparantWindowFrameKey;
 
 //- (IBAction)reloadPage:(id)sender;
 
-- (IBAction)showLocationSheet:(id)sender;
-- (IBAction)endLocationSheet:(id)sender;
-- (IBAction)cancelLocationSheet:(id)sender;
-    
+//- (IBAction)showLocationSheet:(id)sender;
+//- (IBAction)endLocationSheet:(id)sender;
+//- (IBAction)cancelLocationSheet:(id)sender;
+//    
 - (IBAction)showUsernameSheet:(id)sender;
 - (IBAction)endUsernameSheet:(id)sender;
 - (IBAction)cancelUsernameSheet:(id)sender;

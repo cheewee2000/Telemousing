@@ -87,7 +87,6 @@
 		2B88125D1A1041FA00AA1D84 /* PNConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B88120F1A1041FA00AA1D84 /* PNConnection.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		2B88125E1A1041FA00AA1D84 /* PNConnectionChannel.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B8812121A1041FA00AA1D84 /* PNConnectionChannel.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		2B88125F1A1041FA00AA1D84 /* PNLoggerSymbols.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2B8812141A1041FA00AA1D84 /* PNLoggerSymbols.plist */; };
-		3FA25FFF0CCC34CD00502784 /* TransparentWebView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FA25FFE0CCC34CD00502784 /* TransparentWebView.m */; };
 		3FC6456B0CC89D21009F9DB0 /* WebViewWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FC6456A0CC89D21009F9DB0 /* WebViewWindow.m */; };
 		3FC645D40CC8B39B009F9DB0 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3FC645D30CC8B39B009F9DB0 /* WebKit.framework */; };
 		436BC475131715C7003F0603 /* PreferenceController.m in Sources */ = {isa = PBXBuildFile; fileRef = 436BC474131715C7003F0603 /* PreferenceController.m */; };
@@ -314,8 +313,6 @@
 		2B8812111A1041FA00AA1D84 /* PNConnectionChannel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PNConnectionChannel.h; sourceTree = "<group>"; };
 		2B8812121A1041FA00AA1D84 /* PNConnectionChannel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PNConnectionChannel.m; sourceTree = "<group>"; };
 		2B8812141A1041FA00AA1D84 /* PNLoggerSymbols.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = PNLoggerSymbols.plist; sourceTree = "<group>"; };
-		3FA25FFD0CCC34CD00502784 /* TransparentWebView.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = TransparentWebView.h; sourceTree = "<group>"; };
-		3FA25FFE0CCC34CD00502784 /* TransparentWebView.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = TransparentWebView.m; sourceTree = "<group>"; };
 		3FC645690CC89D21009F9DB0 /* WebViewWindow.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = WebViewWindow.h; sourceTree = "<group>"; };
 		3FC6456A0CC89D21009F9DB0 /* WebViewWindow.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = WebViewWindow.m; sourceTree = "<group>"; };
 		3FC645D30CC8B39B009F9DB0 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = /System/Library/Frameworks/WebKit.framework; sourceTree = "<absolute>"; };
@@ -352,8 +349,6 @@
 				43D5811212C2735D000AEA60 /* TransparentWebViewAppDelegate.m */,
 				3FC645690CC89D21009F9DB0 /* WebViewWindow.h */,
 				3FC6456A0CC89D21009F9DB0 /* WebViewWindow.m */,
-				3FA25FFD0CCC34CD00502784 /* TransparentWebView.h */,
-				3FA25FFE0CCC34CD00502784 /* TransparentWebView.m */,
 				436BC473131715C7003F0603 /* PreferenceController.h */,
 				436BC474131715C7003F0603 /* PreferenceController.m */,
 			);
@@ -889,7 +884,6 @@
 				2B8812591A1041FA00AA1D84 /* PNMessagingChannel.m in Sources */,
 				2B88121F1A1041FA00AA1D84 /* PNChannelHistoryParser.m in Sources */,
 				2B88125A1A1041FA00AA1D84 /* PNNetworkHelper.m in Sources */,
-				3FA25FFF0CCC34CD00502784 /* TransparentWebView.m in Sources */,
 				2B8812561A1041FA00AA1D84 /* PNSubscribeRequest.m in Sources */,
 				2B8812231A1041FA00AA1D84 /* PNHereNowResponseParser.m in Sources */,
 				2B88121C1A1041FA00AA1D84 /* PNAccessRightsResponseParser.m in Sources */,

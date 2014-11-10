@@ -23,9 +23,9 @@ CGFloat const titleBarHeight = 22.0f;
 
 @implementation TransparentWebViewAppDelegate
 
-@synthesize window, theWebView;
+@synthesize window;//, theWebView;
 @synthesize borderlessWindowMenuItem, cropUnderTitleBarMenuItem;
-@synthesize locationSheet, urlString;
+//@synthesize locationSheet, urlString;
 @synthesize usernameSheet, usernameString;
 @synthesize followSheet, followString;
 
@@ -159,7 +159,7 @@ CGFloat const titleBarHeight = 22.0f;
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
 	// Insert code here to initialize your application
 	NSLog(@"TransparentWebView app got launched ...");
-	[self loadUrlString:self.urlString IntoWebView:self.theWebView];
+	//[self loadUrlString:self.urlString IntoWebView:self.theWebView];
 
     // PubNub init
     [PubNub setDelegate:self];
@@ -217,34 +217,34 @@ CGFloat const titleBarHeight = 22.0f;
 
 #pragma mark -
 #pragma mark Location Sheet
-
-- (IBAction)showLocationSheet:(id)sender {
-	//
-	[NSApp beginSheet:locationSheet
-	   modalForWindow:window
-		modalDelegate:nil
-	   didEndSelector:NULL
-		  contextInfo:NULL];
-}
-- (IBAction)endLocationSheet:(id)sender {
-    
-    // Return to normal event handling and hide the sheet
-    [NSApp endSheet:locationSheet];
-    [locationSheet orderOut:sender];
-    
-    // Save the location url in the Preferences
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    [defaults setObject:self.urlString forKey:TWVLocationUrlKey];
-    
-    NSLog(@"Load the url: %@", urlString);
-    [self loadUrlString:self.urlString IntoWebView:self.theWebView];
-}
-
-- (IBAction)cancelLocationSheet:(id)sender {
-    // Return to normal event handling and hide the sheet
-    [NSApp endSheet:locationSheet];
-    [locationSheet orderOut:sender];
-}
+//
+//- (IBAction)showLocationSheet:(id)sender {
+//	//
+//	[NSApp beginSheet:locationSheet
+//	   modalForWindow:window
+//		modalDelegate:nil
+//	   didEndSelector:NULL
+//		  contextInfo:NULL];
+//}
+//- (IBAction)endLocationSheet:(id)sender {
+//    
+//    // Return to normal event handling and hide the sheet
+//    [NSApp endSheet:locationSheet];
+//    [locationSheet orderOut:sender];
+//    
+//    // Save the location url in the Preferences
+//    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+//    [defaults setObject:self.urlString forKey:TWVLocationUrlKey];
+//    
+//    NSLog(@"Load the url: %@", urlString);
+//    //[self loadUrlString:self.urlString IntoWebView:self.theWebView];
+//}
+//
+//- (IBAction)cancelLocationSheet:(id)sender {
+//    // Return to normal event handling and hide the sheet
+//    [NSApp endSheet:locationSheet];
+//    [locationSheet orderOut:sender];
+//}
 
 - (IBAction)showUsernameSheet:(id)sender {
     [NSApp beginSheet:usernameSheet
@@ -345,7 +345,7 @@ CGFloat const titleBarHeight = 22.0f;
 - (void)reloadWebView:(NSTimer *)timer {
 	// Reload the web view
 	NSLog(@"Reload the web view");
-	[self.theWebView reload:self];
+	//[self.theWebView reload:self];
 }
 
 
@@ -439,7 +439,7 @@ CGFloat const titleBarHeight = 22.0f;
 		[cropUnderTitleBarMenuItem setState:NSOffState];
 	}
 }
-	
+
 - (void)replaceWindowWithBorderlessWindow:(BOOL)borderlessFlag WithContentRect:(NSRect)contentRect {
 
 	// Save the previous frame (to file and to string)
@@ -493,17 +493,17 @@ CGFloat const titleBarHeight = 22.0f;
 	//		newFrame.origin.y = newFrame.origin.y + titleBarHeight;
 	
 	// Get the current frame of the WebView
-	NSRect newFrame = theWebView.frame;
-
-	// Change the frame 
-	if (cropUnderTitleFlag) {
-		newFrame.size.height = newFrame.size.height + titleBarHeight;
-	} else {
-		newFrame.size.height = newFrame.size.height - titleBarHeight;
-	}
-	
-	// Set the frame back to the web view
-	[theWebView setFrame:newFrame];
+//	NSRect newFrame = theWebView.frame;
+//
+//	// Change the frame 
+//	if (cropUnderTitleFlag) {
+//		newFrame.size.height = newFrame.size.height + titleBarHeight;
+//	} else {
+//		newFrame.size.height = newFrame.size.height - titleBarHeight;
+//	}
+//	
+//	// Set the frame back to the web view
+//	[theWebView setFrame:newFrame];
 }
 
 #pragma mark -
