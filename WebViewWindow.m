@@ -15,10 +15,6 @@
 		[self setOpaque: NO];
 		[self setHasShadow: NO];
         
-        
- 
-        
-        
 	}
 	return self;
 }

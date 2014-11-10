@@ -29,7 +29,7 @@ CGFloat const titleBarHeight = 22.0f;
 @synthesize usernameSheet, usernameString;
 @synthesize followSheet, followString;
 
-@synthesize preferenceController;
+//@synthesize preferenceController;
 
 
 - (id) init {
@@ -42,8 +42,8 @@ CGFloat const titleBarHeight = 22.0f;
     //[defaultValues setObject:@"http://google.com" forKey:TWVLocationUrlKey];
 	[defaultValues setObject:[NSNumber numberWithBool:YES] forKey:TWVBorderlessWindowKey];
 	[defaultValues setObject:[NSNumber numberWithBool:YES] forKey:TWVDrawCroppedUnderTitleBarKey];
-	[defaultValues setObject:[NSNumber numberWithBool:NO] forKey:TWVShouldAutomaticReloadKey];
-	[defaultValues setObject:[NSNumber numberWithInt:15] forKey:TWVAutomaticReloadIntervalKey];
+//	[defaultValues setObject:[NSNumber numberWithBool:NO] forKey:TWVShouldAutomaticReloadKey];
+//	[defaultValues setObject:[NSNumber numberWithInt:15] forKey:TWVAutomaticReloadIntervalKey];
 	
 	[[NSUserDefaults standardUserDefaults] registerDefaults:defaultValues];
 	
@@ -52,11 +52,11 @@ CGFloat const titleBarHeight = 22.0f;
     self.usernameString = [[NSUserDefaults standardUserDefaults] objectForKey:usernameKey];
     self.followString = [[NSUserDefaults standardUserDefaults] objectForKey:followKey];
 
-	// Register for Preference Changes
-	[[NSNotificationCenter defaultCenter] addObserver:self
-											 selector:@selector(handleAutomaticReloadChange:)
-												 name:TWVAutomaticReloadChangedNotification
-											   object:nil];
+//	// Register for Preference Changes
+//	[[NSNotificationCenter defaultCenter] addObserver:self
+//											 selector:@selector(handleAutomaticReloadChange:)
+//												 name:TWVAutomaticReloadChangedNotification
+//											   object:nil];
 	
     // Setup PubNub
     [self initPubNub];
@@ -257,41 +257,22 @@ CGFloat const titleBarHeight = 22.0f;
 }
 
 
-#pragma mark -
-#pragma mark Preferences Panel
-
-- (IBAction)showPreferencePanel:(id)sender {
-	// Lazy loading
-	if (self.preferenceController == nil) {
-		PreferenceController *prefController = [[PreferenceController alloc] init];
-		self.preferenceController = prefController;
-	}
-	NSLog(@"showing %@", preferenceController);
-	[preferenceController showWindow:self];
-}
-
-
-
-
-/*
- * Methods sets the UI properties according to the state of the Borderless Window
- */
-//- (void)setBorderlessWindowMenuItemState:(BOOL)booleanState {
-//	
-////	if (booleanState) {
-////		// YES BorderlessWindow
-////		NSLog(@"Set borderless!");
-////		[borderlessWindowMenuItem setState:NSOnState];
-////		[borderlessWindowMenuItem setTitle:@"Hide Borderless"];
-////		[cropUnderTitleBarMenuItem setEnabled:NO];
-////	} else {
-////		// NO BorderlessWindow
-////		NSLog(@"Set NOT borderless!");
-////		[borderlessWindowMenuItem setState:NSOffState];
-////		[borderlessWindowMenuItem setTitle:@"Show Borderless"];
-////		[cropUnderTitleBarMenuItem setEnabled:YES];
-////	}
+//#pragma mark -
+//#pragma mark Preferences Panel
+//
+//- (IBAction)showPreferencePanel:(id)sender {
+//	// Lazy loading
+//	if (self.preferenceController == nil) {
+//		PreferenceController *prefController = [[PreferenceController alloc] init];
+//		self.preferenceController = prefController;
+//	}
+//	NSLog(@"showing %@", preferenceController);
+//	[preferenceController showWindow:self];
 //}
+
+
+
+
 
 - (void)setCropUnderTitleBarMenuItemState:(BOOL)booleanState {
 	
@@ -350,25 +331,7 @@ CGFloat const titleBarHeight = 22.0f;
 	[oldWindow close];
 }
 
-- (void)cropContentUnderTitleBar:(BOOL)cropUnderTitleFlag {
-	// Set the new frame of the web view
-	
-	// The origin.y is measured from the bottom, so we only have to set the height	
-	//		newFrame.origin.y = newFrame.origin.y + titleBarHeight;
-	
-	// Get the current frame of the WebView
-//	NSRect newFrame = theWebView.frame;
-//
-//	// Change the frame 
-//	if (cropUnderTitleFlag) {
-//		newFrame.size.height = newFrame.size.height + titleBarHeight;
-//	} else {
-//		newFrame.size.height = newFrame.size.height - titleBarHeight;
-//	}
-//	
-//	// Set the frame back to the web view
-//	[theWebView setFrame:newFrame];
-}
+
 
 #pragma mark -
 #pragma mark NSWindow Delegate Methods
