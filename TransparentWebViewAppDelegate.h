@@ -12,7 +12,6 @@
 
 @class PreferenceController;
 
-extern NSString *const TWVLocationUrlKey;
 extern NSString *const TWVBorderlessWindowKey;
 extern NSString *const TWVDrawCroppedUnderTitleBarKey;
 extern NSString *const TWVMainTransparantWindowFrameKey;
@@ -23,12 +22,9 @@ extern NSString *const TWVMainTransparantWindowFrameKey;
 @interface TransparentWebViewAppDelegate : NSObject <NSApplicationDelegate, NSWindowDelegate, PNDelegate> {
 #endif
     NSWindow *window;
-	//WebView *__weak theWebView;
 	
 	NSMenuItem *__weak borderlessWindowMenuItem;
-	//NSMenuItem *__weak cropUnderTitleBarMenuItem;
-	
-	//NSWindow *__weak locationSheet;
+
     NSWindow *__weak usernameSheet;
     NSWindow *__weak followSheet;
 
@@ -37,7 +33,6 @@ extern NSString *const TWVMainTransparantWindowFrameKey;
     NSString *followString;
     
 	PreferenceController *preferenceController;
-	NSTimer *automaticReloadTimer;
     NSRect screenRect;
     
     
@@ -45,16 +40,12 @@ extern NSString *const TWVMainTransparantWindowFrameKey;
 
 }
 
-//@property (strong)  TransparentMouse *mouseWindow;
-
     
 @property (strong) IBOutlet NSWindow *window;
-//@property (weak) IBOutlet WebView *theWebView;
 
 @property (weak) IBOutlet NSMenuItem *borderlessWindowMenuItem;
 @property (weak) IBOutlet NSMenuItem *cropUnderTitleBarMenuItem;
 
-//@property (weak) IBOutlet NSWindow *locationSheet;
 @property (weak) IBOutlet NSWindow *usernameSheet;
 @property (weak) IBOutlet NSWindow *followSheet;
 
@@ -64,12 +55,7 @@ extern NSString *const TWVMainTransparantWindowFrameKey;
 
 @property (nonatomic, strong) PreferenceController *preferenceController;
 
-//- (IBAction)reloadPage:(id)sender;
-
-//- (IBAction)showLocationSheet:(id)sender;
-//- (IBAction)endLocationSheet:(id)sender;
-//- (IBAction)cancelLocationSheet:(id)sender;
-//    
+ 
 - (IBAction)showUsernameSheet:(id)sender;
 - (IBAction)endUsernameSheet:(id)sender;
 - (IBAction)cancelUsernameSheet:(id)sender;
@@ -78,16 +64,8 @@ extern NSString *const TWVMainTransparantWindowFrameKey;
 - (IBAction)endFollowSheet:(id)sender;
 - (IBAction)cancelFollowSheet:(id)sender;
 
-
-//- (IBAction)toggleBorderlessWindow:(id)sender;
-//- (IBAction)toggleCropUnderTitleBar:(id)sender;
-
 - (IBAction)showPreferencePanel:(id)sender;
-	
-- (void)resetAutomaticReloadTimer;	
-- (void)loadUrlString:(NSString *)anUrlString IntoWebView:(WebView *)aWebView;
-
-- (void)setBorderlessWindowMenuItemState:(BOOL)booleanState;
+	- (void)setBorderlessWindowMenuItemState:(BOOL)booleanState;
 - (void)setCropUnderTitleBarMenuItemState:(BOOL)booleanState;
 
 - (void)replaceWindowWithBorderlessWindow:(BOOL)borderlessFlag WithContentRect:(NSRect)contentRect;
