@@ -134,8 +134,8 @@ CGFloat const titleBarHeight = 22.0f;
     
     //Publish on the channel
     TransparentWebViewAppDelegate *weakSelf = self;
-    [PubNub sendMessage:@{@"username":[self usernameString],@"x":xs, @"y":ys}
-              toChannel:[PNChannel channelWithName:@"telemouse"]
+    [PubNub sendMessage:@{@"x":xs, @"y":ys}
+              toChannel:[PNChannel channelWithName:[self usernameString]]
     withCompletionBlock:^(PNMessageState sendingSate, id data) {
         
         switch (sendingSate) {
