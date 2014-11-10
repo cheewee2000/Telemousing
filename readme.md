@@ -22,3 +22,6 @@ Objective C - To make a native OS X app which can track mouse position continuou
 <h4>Assets</h4>
 Path to the cursor icon: /System/Library/PrivateFrameworks/EFILogin.framework/Versions/A/Resources/EFIResourceBuilder.bundle/Contents/Resources/loginui_cursor@2x.png
 Thanks Apple :)
+
+Or even better, a vector version
+http://static.micheljansen.org/uploads/cursor.pdf
