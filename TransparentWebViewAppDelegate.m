@@ -215,6 +215,39 @@ CGFloat const titleBarHeight = 22.0f;
     
 }
 
+<<<<<<< HEAD
+=======
+#pragma mark -
+#pragma mark Location Sheet
+//
+//- (IBAction)showLocationSheet:(id)sender {
+//	//
+//	[NSApp beginSheet:locationSheet
+//	   modalForWindow:window
+//		modalDelegate:nil
+//	   didEndSelector:NULL
+//		  contextInfo:NULL];
+//}
+//- (IBAction)endLocationSheet:(id)sender {
+//    
+//    // Return to normal event handling and hide the sheet
+//    [NSApp endSheet:locationSheet];
+//    [locationSheet orderOut:sender];
+//    
+//    // Save the location url in the Preferences
+//    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+//    [defaults setObject:self.urlString forKey:TWVLocationUrlKey];
+//    
+//    NSLog(@"Load the url: %@", urlString);
+//    //[self loadUrlString:self.urlString IntoWebView:self.theWebView];
+//}
+//
+//- (IBAction)cancelLocationSheet:(id)sender {
+//    // Return to normal event handling and hide the sheet
+//    [NSApp endSheet:locationSheet];
+//    [locationSheet orderOut:sender];
+//}
+>>>>>>> parent of de20be3... cleanup part 2
 
 - (IBAction)showUsernameSheet:(id)sender {
     [NSApp beginSheet:usernameSheet
@@ -256,6 +289,25 @@ CGFloat const titleBarHeight = 22.0f;
 
 
 
+<<<<<<< HEAD
+=======
+
+/*
+ * The method to load any url string into a web view of choice
+ */
+- (void)loadUrlString:(NSString *)anUrlString IntoWebView:(WebView *)aWebView {
+	
+	// Make an URL from the String, and then a Request from the URL
+	NSURL *url = [NSURL URLWithString:anUrlString];
+	NSURLRequest *urlReq = [NSURLRequest requestWithURL:url];
+	
+	// Get the webFrame and load the request
+	WebFrame* webFrame = [aWebView mainFrame];
+	[webFrame loadRequest: urlReq];
+}
+
+
+>>>>>>> parent of de20be3... cleanup part 2
 #pragma mark -
 #pragma mark Preferences Panel
 
@@ -270,6 +322,118 @@ CGFloat const titleBarHeight = 22.0f;
 }
 
 
+- (void)handleAutomaticReloadChange:(NSNotification *)notification {
+	//NSLog(@"Received Notification %@", notification);
+	[self resetAutomaticReloadTimer];
+}
+
+
+- (void)resetAutomaticReloadTimer {
+	// Invalidate the previousTimer
+	if (automaticReloadTimer != nil) {
+		[automaticReloadTimer invalidate];
+		automaticReloadTimer = nil;
+	}
+	
+	// Do we need a timer?
+	if ( [[NSUserDefaults standardUserDefaults] boolForKey:TWVShouldAutomaticReloadKey] ) {
+		// Create a new timer
+		int reloadInterval = [[[NSUserDefaults standardUserDefaults] objectForKey:TWVAutomaticReloadIntervalKey] intValue];
+		automaticReloadTimer = [NSTimer scheduledTimerWithTimeInterval:reloadInterval
+																 target:self
+															   selector:@selector(reloadWebView:)
+															   userInfo:nil
+																repeats:YES];
+	}
+}
+
+
+- (void)reloadWebView:(NSTimer *)timer {
+	// Reload the web view
+	NSLog(@"Reload the web view");
+	//[self.theWebView reload:self];
+}
+
+
+#pragma mark -
+#pragma mark Borderless Window
+
+/*
+- (IBAction)toggleBorderlessWindow:(id)sender {
+	
+	// Toggle the borderless Window state:
+	BOOL newState = ([borderlessWindowMenuItem state] == NSOffState);
+	
+	// Set the MenuItemState
+	[self setBorderlessWindowMenuItemState:newState];
+	
+	// Save the borderless Window state in the Preferences
+	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+	[defaults setObject:[NSNumber numberWithBool:newState] forKey:TWVBorderlessWindowKey];
+	
+	// Create a new window and reload the content
+	NSLog(@"Create a new %@ window", newState ? @"BORDERLESS" : @"BORDERED");
+	
+	BOOL cropUnderTitleState = [[[NSUserDefaults standardUserDefaults] objectForKey:TWVDrawCroppedUnderTitleBarKey] boolValue];
+
+	NSRect newContentRect = [window frame];
+	if (newState) {
+		if (cropUnderTitleState) {
+			[self cropContentUnderTitleBar:NO];
+		} else {
+			newContentRect.size.height = newContentRect.size.height - titleBarHeight;
+		}
+	} else {
+		if (cropUnderTitleState) {
+			[self cropContentUnderTitleBar:YES];
+		} else {
+			// Fix the window frame (not the content frame)
+			NSRect theWindowFrame = [window frame];
+			theWindowFrame.size.height = theWindowFrame.size.height + titleBarHeight;
+			[window setFrame:theWindowFrame display:NO];
+		}
+	}
+	
+	[self replaceWindowWithBorderlessWindow:newState WithContentRect:newContentRect];
+}
+
+- (IBAction)toggleCropUnderTitleBar:(id)sender {
+
+	// Toggle the Crop Under Title Bar state:
+	BOOL newState = ([cropUnderTitleBarMenuItem state] == NSOffState);
+
+	// Set the MenuItemState
+	[self setCropUnderTitleBarMenuItemState:newState];
+
+	// Save the Crop Under Title Bar state in the Preferences
+	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+	[defaults setObject:[NSNumber numberWithBool:newState] forKey:TWVDrawCroppedUnderTitleBarKey];
+	
+	// Perform the content cropping change
+	[self cropContentUnderTitleBar:newState];
+}
+*/
+
+
+/*
+ * Methods sets the UI properties according to the state of the Borderless Window
+ */
+- (void)setBorderlessWindowMenuItemState:(BOOL)booleanState {
+	
+//	if (booleanState) {
+//		// YES BorderlessWindow
+//		NSLog(@"Set borderless!");
+//		[borderlessWindowMenuItem setState:NSOnState];
+//		[borderlessWindowMenuItem setTitle:@"Hide Borderless"];
+//		[cropUnderTitleBarMenuItem setEnabled:NO];
+//	} else {
+//		// NO BorderlessWindow
+//		NSLog(@"Set NOT borderless!");
+//		[borderlessWindowMenuItem setState:NSOffState];
+//		[borderlessWindowMenuItem setTitle:@"Show Borderless"];
+//		[cropUnderTitleBarMenuItem setEnabled:YES];
+//	}
+}
 
 #pragma mark -
 #pragma mark Borderless Window
@@ -355,7 +519,29 @@ CGFloat const titleBarHeight = 22.0f;
 	[oldWindow close];
 }
 
+<<<<<<< HEAD
 
+=======
+- (void)cropContentUnderTitleBar:(BOOL)cropUnderTitleFlag {
+	// Set the new frame of the web view
+	
+	// The origin.y is measured from the bottom, so we only have to set the height	
+	//		newFrame.origin.y = newFrame.origin.y + titleBarHeight;
+	
+	// Get the current frame of the WebView
+//	NSRect newFrame = theWebView.frame;
+//
+//	// Change the frame 
+//	if (cropUnderTitleFlag) {
+//		newFrame.size.height = newFrame.size.height + titleBarHeight;
+//	} else {
+//		newFrame.size.height = newFrame.size.height - titleBarHeight;
+//	}
+//	
+//	// Set the frame back to the web view
+//	[theWebView setFrame:newFrame];
+}
+>>>>>>> parent of de20be3... cleanup part 2
 
 #pragma mark -
 #pragma mark NSWindow Delegate Methods
@@ -374,6 +560,7 @@ CGFloat const titleBarHeight = 22.0f;
 #pragma mark -
 
 - (void)dealloc {
+	[automaticReloadTimer invalidate];
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
