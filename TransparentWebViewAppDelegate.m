@@ -49,8 +49,12 @@ CGFloat const titleBarHeight = 22.0f;
 	
 	// Set the url from the Preferences file
 	//self.urlString = [[NSUserDefaults standardUserDefaults] objectForKey:TWVLocationUrlKey];
-    self.usernameString = [[NSUserDefaults standardUserDefaults] objectForKey:usernameKey];
-    self.followString = [[NSUserDefaults standardUserDefaults] objectForKey:followKey];
+    
+    if([[NSUserDefaults standardUserDefaults] objectForKey:usernameKey] == nil) self.usernameString=@"nobody";
+    else self.usernameString = [[NSUserDefaults standardUserDefaults] objectForKey:usernameKey];
+    
+    if([[NSUserDefaults standardUserDefaults] objectForKey:followKey] == nil) self.followString=@"somebodyelse";
+    else self.followString = [[NSUserDefaults standardUserDefaults] objectForKey:followKey];
 
 	// Register for Preference Changes
 	[[NSNotificationCenter defaultCenter] addObserver:self
@@ -78,7 +82,6 @@ CGFloat const titleBarHeight = 22.0f;
 
 
 
-    [self subscribePubNub];
     
 	return self;
 }
@@ -216,6 +219,8 @@ CGFloat const titleBarHeight = 22.0f;
     followY=.3;
     [self moveMouse];
     
+    [self subscribePubNub];
+
     
 }
 
@@ -485,6 +490,11 @@ CGFloat const titleBarHeight = 22.0f;
 	[(WebViewWindow *)window setDrawsBackgroundSettings];
 	
  
+    followX=.1;
+    followY=.1;
+    [self moveMouse];
+    window.alphaValue=.8;
+    
     
 	// Close the old window
 	[oldWindow close];
