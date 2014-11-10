@@ -4,6 +4,8 @@
 @interface WebViewWindow : NSWindow
 {
    IBOutlet WebView* thisWebView;
+  
+
 }
 
 - (void)setDrawsBackgroundSettings;

@@ -14,6 +14,11 @@
 		[self setAlphaValue: 1.0];
 		[self setOpaque: NO];
 		[self setHasShadow: NO];
+        
+        
+ 
+        
+        
 	}
 	return self;
 }
@@ -25,7 +30,7 @@
 
 - (void)setDrawsBackgroundSettings {
 	[thisWebView setDrawsBackground: NO];
-	[self setView: thisWebView onWindow: self]; 
+	[self setView: thisWebView onWindow: self];
 }
 
 - (void)setView:(WebView*)view onWindow: (NSWindow*) window {

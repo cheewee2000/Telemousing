@@ -38,7 +38,7 @@ CGFloat const titleBarHeight = 22.0f;
 	// Register the Defaults in the Preferences
 	NSMutableDictionary *defaultValues = [NSMutableDictionary dictionary];
 	
-	[defaultValues setObject:@"http://jonathanbobrow.com/telemouse/" forKey:TWVLocationUrlKey];
+	//[defaultValues setObject:@"http://jonathanbobrow.com/telemouse/" forKey:TWVLocationUrlKey];
     //[defaultValues setObject:@"http://google.com" forKey:TWVLocationUrlKey];
 	[defaultValues setObject:[NSNumber numberWithBool:YES] forKey:TWVBorderlessWindowKey];
 	[defaultValues setObject:[NSNumber numberWithBool:YES] forKey:TWVDrawCroppedUnderTitleBarKey];
@@ -75,16 +75,22 @@ CGFloat const titleBarHeight = 22.0f;
                                    userInfo:nil
                                     repeats:YES];
     
-    //set window size
-    NSRect newFrame = window.frame;
-    newFrame.size.height = 30;
-    newFrame.size.width = 20;
-    [window setFrame:newFrame display:YES];
+
     
+//    mouseWindow = [[TransparentMouse alloc]initWithContentRect:CGRectMake(0, 0, 100, 100)
+//                                                         styleMask:NSBorderlessWindowMask
+//                                                           backing:NSBackingStoreBuffered
+//                                                             defer:NO];
+//    
+//    [mouseWindow setFrame:newFrame display:YES];
+    
+    
+
+
     //inital position
     followX=screenRect.size.width*.2;
     followY=screenRect.size.height*.2;
-
+    [self moveMouse];
     [self subscribePubNub];
     
 	return self;
@@ -209,6 +215,7 @@ CGFloat const titleBarHeight = 22.0f;
         screenRect = [screen visibleFrame];
     }
     
+
     
     NSLog(@"width %f",screenRect.size.width);
     
@@ -480,6 +487,8 @@ CGFloat const titleBarHeight = 22.0f;
 	// Call the same window as awakeFromNib would have
 	[(WebViewWindow *)window setDrawsBackgroundSettings];
 	
+ 
+    
 	// Close the old window
 	[oldWindow close];
 }

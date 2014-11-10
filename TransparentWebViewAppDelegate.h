@@ -9,6 +9,7 @@
 #import <Cocoa/Cocoa.h>
 #import <WebKit/WebView.h>
 #import <WebKit/WebFrame.h>
+#import "TransparentMouse.h"
 
 @class PreferenceController;
 
