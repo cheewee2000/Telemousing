@@ -81,6 +81,10 @@ CGFloat const titleBarHeight = 22.0f;
     newFrame.size.width = 20;
     [window setFrame:newFrame display:YES];
     
+    //inital position
+    followX=screenRect.size.width*.2;
+    followY=screenRect.size.height*.2;
+
     [self subscribePubNub];
     
 	return self;
@@ -103,29 +107,20 @@ CGFloat const titleBarHeight = 22.0f;
 -(void)subscribePubNub{
     //Define a channel
     PNChannel *channel = [PNChannel channelWithName:self.followString shouldObservePresence:YES];
-    
-    //Subscribe to the channel
     [PubNub subscribeOnChannel:channel];
-    
-    
 }
 
 - (void)pubnubClient:(PubNub *)client didReceiveMessage:(PNMessage *)message {
-    //NSLog( @"%@", [NSString stringWithFormat:@"received: %@", message.message] );
     followX=[[message.message objectForKey:@"x"]floatValue];
     followY=[[message.message objectForKey:@"y"]floatValue];
-
     NSLog(@"received x %f, y %f",followX,followY);
 }
 
 -(void)moveMouse{
-    
     NSRect frame = [window frame];
     frame.origin.x=followX*screenRect.size.width;
     frame.origin.y=followY*screenRect.size.height;
-    
     [window setFrame:frame display:YES animate:YES];
-
 }
 
 -(void)broadcastMouse{
