@@ -32,7 +32,7 @@ extern NSString *const TWVMainTransparantWindowFrameKey;
     NSWindow *__weak usernameSheet;
     NSWindow *__weak followSheet;
 
-	//NSString *urlString;
+	NSString *urlString;
 	NSString *usernameString;
     NSString *followString;
     
@@ -64,15 +64,12 @@ extern NSString *const TWVMainTransparantWindowFrameKey;
 
 @property (nonatomic, strong) PreferenceController *preferenceController;
 
-<<<<<<< HEAD
-=======
 //- (IBAction)reloadPage:(id)sender;
 
 //- (IBAction)showLocationSheet:(id)sender;
 //- (IBAction)endLocationSheet:(id)sender;
 //- (IBAction)cancelLocationSheet:(id)sender;
 //    
->>>>>>> parent of de20be3... cleanup part 2
 - (IBAction)showUsernameSheet:(id)sender;
 - (IBAction)endUsernameSheet:(id)sender;
 - (IBAction)cancelUsernameSheet:(id)sender;
@@ -92,7 +89,8 @@ extern NSString *const TWVMainTransparantWindowFrameKey;
 
 - (void)setBorderlessWindowMenuItemState:(BOOL)booleanState;
 - (void)setCropUnderTitleBarMenuItemState:(BOOL)booleanState;
+
 - (void)replaceWindowWithBorderlessWindow:(BOOL)borderlessFlag WithContentRect:(NSRect)contentRect;
-//- (void)cropContentUnderTitleBar:(BOOL)cropUnderTitleFlag;
+- (void)cropContentUnderTitleBar:(BOOL)cropUnderTitleFlag;
 
 @end

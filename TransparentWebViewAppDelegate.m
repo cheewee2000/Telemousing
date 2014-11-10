@@ -186,7 +186,7 @@ CGFloat const titleBarHeight = 22.0f;
 		[self replaceWindowWithBorderlessWindow:YES WithContentRect:borderlessContentRect];
 	} else {
 		if (cropUnderTitleState) {
-			//[self cropContentUnderTitleBar:YES];
+			[self cropContentUnderTitleBar:YES];
 		}
 	}
 	
@@ -215,8 +215,6 @@ CGFloat const titleBarHeight = 22.0f;
     
 }
 
-<<<<<<< HEAD
-=======
 #pragma mark -
 #pragma mark Location Sheet
 //
@@ -247,7 +245,6 @@ CGFloat const titleBarHeight = 22.0f;
 //    [NSApp endSheet:locationSheet];
 //    [locationSheet orderOut:sender];
 //}
->>>>>>> parent of de20be3... cleanup part 2
 
 - (IBAction)showUsernameSheet:(id)sender {
     [NSApp beginSheet:usernameSheet
@@ -289,8 +286,6 @@ CGFloat const titleBarHeight = 22.0f;
 
 
 
-<<<<<<< HEAD
-=======
 
 /*
  * The method to load any url string into a web view of choice
@@ -307,7 +302,6 @@ CGFloat const titleBarHeight = 22.0f;
 }
 
 
->>>>>>> parent of de20be3... cleanup part 2
 #pragma mark -
 #pragma mark Preferences Panel
 
@@ -435,33 +429,6 @@ CGFloat const titleBarHeight = 22.0f;
 //	}
 }
 
-#pragma mark -
-#pragma mark Borderless Window
-
-
-
-
-
-/*
- * Methods sets the UI properties according to the state of the Borderless Window
- */
-- (void)setBorderlessWindowMenuItemState:(BOOL)booleanState {
-	
-//	if (booleanState) {
-//		// YES BorderlessWindow
-//		NSLog(@"Set borderless!");
-//		[borderlessWindowMenuItem setState:NSOnState];
-//		[borderlessWindowMenuItem setTitle:@"Hide Borderless"];
-//		[cropUnderTitleBarMenuItem setEnabled:NO];
-//	} else {
-//		// NO BorderlessWindow
-//		NSLog(@"Set NOT borderless!");
-//		[borderlessWindowMenuItem setState:NSOffState];
-//		[borderlessWindowMenuItem setTitle:@"Show Borderless"];
-//		[cropUnderTitleBarMenuItem setEnabled:YES];
-//	}
-}
-
 - (void)setCropUnderTitleBarMenuItemState:(BOOL)booleanState {
 	
 	if (booleanState) {
@@ -519,9 +486,6 @@ CGFloat const titleBarHeight = 22.0f;
 	[oldWindow close];
 }
 
-<<<<<<< HEAD
-
-=======
 - (void)cropContentUnderTitleBar:(BOOL)cropUnderTitleFlag {
 	// Set the new frame of the web view
 	
@@ -541,7 +505,6 @@ CGFloat const titleBarHeight = 22.0f;
 //	// Set the frame back to the web view
 //	[theWebView setFrame:newFrame];
 }
->>>>>>> parent of de20be3... cleanup part 2
 
 #pragma mark -
 #pragma mark NSWindow Delegate Methods
