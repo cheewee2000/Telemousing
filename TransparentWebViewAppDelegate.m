@@ -38,7 +38,8 @@ CGFloat const titleBarHeight = 22.0f;
 	// Register the Defaults in the Preferences
 	NSMutableDictionary *defaultValues = [NSMutableDictionary dictionary];
 	
-
+	//[defaultValues setObject:@"http://jonathanbobrow.com/telemouse/" forKey:TWVLocationUrlKey];
+    //[defaultValues setObject:@"http://google.com" forKey:TWVLocationUrlKey];
 	[defaultValues setObject:[NSNumber numberWithBool:YES] forKey:TWVBorderlessWindowKey];
 	[defaultValues setObject:[NSNumber numberWithBool:YES] forKey:TWVDrawCroppedUnderTitleBarKey];
 	[defaultValues setObject:[NSNumber numberWithBool:NO] forKey:TWVShouldAutomaticReloadKey];
@@ -214,8 +215,6 @@ CGFloat const titleBarHeight = 22.0f;
     
 }
 
-#pragma mark -
-#pragma mark prefs Sheet
 
 - (IBAction)showUsernameSheet:(id)sender {
     [NSApp beginSheet:usernameSheet
@@ -257,8 +256,6 @@ CGFloat const titleBarHeight = 22.0f;
 
 
 
-
-
 #pragma mark -
 #pragma mark Preferences Panel
 
@@ -274,6 +271,32 @@ CGFloat const titleBarHeight = 22.0f;
 
 
 
+#pragma mark -
+#pragma mark Borderless Window
+
+
+
+
+/*
+ * Methods sets the UI properties according to the state of the Borderless Window
+ */
+- (void)setBorderlessWindowMenuItemState:(BOOL)booleanState {
+	
+//	if (booleanState) {
+//		// YES BorderlessWindow
+//		NSLog(@"Set borderless!");
+//		[borderlessWindowMenuItem setState:NSOnState];
+//		[borderlessWindowMenuItem setTitle:@"Hide Borderless"];
+//		[cropUnderTitleBarMenuItem setEnabled:NO];
+//	} else {
+//		// NO BorderlessWindow
+//		NSLog(@"Set NOT borderless!");
+//		[borderlessWindowMenuItem setState:NSOffState];
+//		[borderlessWindowMenuItem setTitle:@"Show Borderless"];
+//		[cropUnderTitleBarMenuItem setEnabled:YES];
+//	}
+}
+
 - (void)setCropUnderTitleBarMenuItemState:(BOOL)booleanState {
 	
 	if (booleanState) {
@@ -284,6 +307,53 @@ CGFloat const titleBarHeight = 22.0f;
 		[cropUnderTitleBarMenuItem setState:NSOffState];
 	}
 }
+
+- (void)replaceWindowWithBorderlessWindow:(BOOL)borderlessFlag WithContentRect:(NSRect)contentRect {
+
+	// Save the previous frame (to file and to string)
+	[window saveFrameUsingName:TWVMainTransparantWindowFrameKey];
+	NSString *savedFrameString = [window stringWithSavedFrame];
+	
+	// Get a pointer to the old window
+	NSWindow *oldWindow = window;
+	
+	// Make the windowstyle
+	NSUInteger newStyle;
+	if (borderlessFlag) {
+		newStyle = NSBorderlessWindowMask;
+	} else {
+		newStyle = NSTitledWindowMask |	NSClosableWindowMask | NSMiniaturizableWindowMask | NSResizableWindowMask;
+	}
+	
+	// Create the new window
+	self.window = [[WebViewWindow alloc] initWithContentRect:contentRect
+												   styleMask:newStyle
+													 backing:NSBackingStoreBuffered
+													   defer:NO];
+
+	// Set the properties (as also set in Interface Builder)
+	[window setContentView:[oldWindow contentView]];
+	[window setTitle:@"Pointer"];
+	[window setFrameAutosaveName:TWVMainTransparantWindowFrameKey];
+
+	// Restore the frame from the one save above
+	[window setFrameFromString:savedFrameString];
+	
+	// Set us as the delegate
+	[window setDelegate:self];
+
+	// Order front (Show the Window)
+	[window makeKeyAndOrderFront:self];
+	
+	// Call the same window as awakeFromNib would have
+	[(WebViewWindow *)window setDrawsBackgroundSettings];
+	
+ 
+    
+	// Close the old window
+	[oldWindow close];
+}
+
 
 
 #pragma mark -
