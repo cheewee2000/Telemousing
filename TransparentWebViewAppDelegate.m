@@ -79,8 +79,6 @@ CGFloat const titleBarHeight = 22.0f;
     [window setFrame:newFrame display:YES];
     
     
-
-    
     
 	return self;
 }

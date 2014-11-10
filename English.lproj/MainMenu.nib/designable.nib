@@ -235,9 +235,9 @@
 			<object class="NSWindowTemplate" id="678803503">
 				<int key="NSWindowStyleMask">15</int>
 				<int key="NSWindowBacking">2</int>
-				<string key="NSWindowRect">{{131, 309}, {480, 119}}</string>
+				<string key="NSWindowRect">{{131, 309}, {370, 89}}</string>
 				<int key="NSWTFlags">611844096</int>
-				<string key="NSWindowTitle">LocationSheet</string>
+				<string key="NSWindowTitle">URL</string>
 				<string key="NSWindowClass">NSWindow</string>
 				<nil key="NSViewClass"/>
 				<nil key="NSUserInterfaceItemIdentifier"/>
@@ -249,7 +249,7 @@
 						<object class="NSTextField" id="272153872">
 							<reference key="NSNextResponder" ref="812040611"/>
 							<int key="NSvFlags">300</int>
-							<string key="NSFrame">{{17, 82}, {152, 17}}</string>
+							<string key="NSFrame">{{18, 52}, {69, 17}}</string>
 							<reference key="NSSuperview" ref="812040611"/>
 							<reference key="NSWindow"/>
 							<reference key="NSNextKeyView" ref="446915317"/>
@@ -257,7 +257,7 @@
 							<object class="NSTextFieldCell" key="NSCell" id="1052173607">
 								<int key="NSCellFlags">68157504</int>
 								<int key="NSCellFlags2">272630784</int>
-								<string key="NSContents">Open the Location URL:</string>
+								<string key="NSContents">URL</string>
 								<object class="NSFont" key="NSSupport" id="388617783">
 									<bool key="IBIsSystemFont">YES</bool>
 									<double key="NSSize">13</double>
@@ -289,7 +289,7 @@
 						<object class="NSTextField" id="446915317">
 							<reference key="NSNextResponder" ref="812040611"/>
 							<int key="NSvFlags">298</int>
-							<string key="NSFrame">{{20, 48}, {440, 22}}</string>
+							<string key="NSFrame">{{90, 49}, {260, 22}}</string>
 							<reference key="NSSuperview" ref="812040611"/>
 							<reference key="NSWindow"/>
 							<reference key="NSNextKeyView" ref="863188376"/>
@@ -323,7 +323,7 @@
 						<object class="NSButton" id="863188376">
 							<reference key="NSNextResponder" ref="812040611"/>
 							<int key="NSvFlags">297</int>
-							<string key="NSFrame">{{268, 12}, {99, 32}}</string>
+							<string key="NSFrame">{{158, 13}, {99, 32}}</string>
 							<reference key="NSSuperview" ref="812040611"/>
 							<reference key="NSWindow"/>
 							<reference key="NSNextKeyView" ref="183874945"/>
@@ -351,9 +351,10 @@
 						<object class="NSButton" id="183874945">
 							<reference key="NSNextResponder" ref="812040611"/>
 							<int key="NSvFlags">297</int>
-							<string key="NSFrame">{{367, 12}, {99, 32}}</string>
+							<string key="NSFrame">{{257, 13}, {99, 32}}</string>
 							<reference key="NSSuperview" ref="812040611"/>
 							<reference key="NSWindow"/>
+							<reference key="NSNextKeyView"/>
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSButtonCell" key="NSCell" id="945889670">
 								<int key="NSCellFlags">-2080374784</int>
@@ -372,7 +373,7 @@
 							<bool key="NSAllowsLogicalLayoutDirection">NO</bool>
 						</object>
 					</array>
-					<string key="NSFrameSize">{480, 119}</string>
+					<string key="NSFrameSize">{370, 89}</string>
 					<reference key="NSSuperview"/>
 					<reference key="NSWindow"/>
 					<reference key="NSNextKeyView" ref="272153872"/>
@@ -399,7 +400,7 @@
 						<object class="NSTextField" id="20262740">
 							<reference key="NSNextResponder" ref="283739287"/>
 							<int key="NSvFlags">300</int>
-							<string key="NSFrame">{{18, 41}, {152, 17}}</string>
+							<string key="NSFrame">{{18, 41}, {77, 17}}</string>
 							<reference key="NSSuperview" ref="283739287"/>
 							<reference key="NSWindow"/>
 							<reference key="NSNextKeyView" ref="848268677"/>
@@ -418,8 +419,8 @@
 						</object>
 						<object class="NSTextField" id="848268677">
 							<reference key="NSNextResponder" ref="283739287"/>
-							<int key="NSvFlags">298</int>
-							<string key="NSFrame">{{88, 38}, {262, 22}}</string>
+							<int key="NSvFlags">299</int>
+							<string key="NSFrame">{{90, 38}, {260, 22}}</string>
 							<reference key="NSSuperview" ref="283739287"/>
 							<reference key="NSWindow"/>
 							<reference key="NSNextKeyView" ref="303110400"/>
@@ -467,6 +468,7 @@
 							<string key="NSFrame">{{257, 5}, {99, 32}}</string>
 							<reference key="NSSuperview" ref="283739287"/>
 							<reference key="NSWindow"/>
+							<reference key="NSNextKeyView"/>
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSButtonCell" key="NSCell" id="544006091">
 								<int key="NSCellFlags">-2080374784</int>
@@ -531,8 +533,8 @@
 						</object>
 						<object class="NSTextField" id="129283474">
 							<reference key="NSNextResponder" ref="640275612"/>
-							<int key="NSvFlags">298</int>
-							<string key="NSFrame">{{88, 38}, {262, 22}}</string>
+							<int key="NSvFlags">299</int>
+							<string key="NSFrame">{{90, 38}, {260, 22}}</string>
 							<reference key="NSSuperview" ref="640275612"/>
 							<reference key="NSWindow"/>
 							<reference key="NSNextKeyView" ref="1020347811"/>
@@ -580,6 +582,7 @@
 							<string key="NSFrame">{{257, 5}, {99, 32}}</string>
 							<reference key="NSSuperview" ref="640275612"/>
 							<reference key="NSWindow"/>
+							<reference key="NSNextKeyView"/>
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSButtonCell" key="NSCell" id="174304610">
 								<int key="NSCellFlags">-2080374784</int>
@@ -948,15 +951,16 @@
 							<reference ref="812040611"/>
 						</array>
 						<reference key="parent" ref="0"/>
+						<string key="objectName">URL</string>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">216</int>
 						<reference key="object" ref="812040611"/>
 						<array class="NSMutableArray" key="children">
-							<reference ref="272153872"/>
 							<reference ref="183874945"/>
-							<reference ref="446915317"/>
 							<reference ref="863188376"/>
+							<reference ref="446915317"/>
+							<reference ref="272153872"/>
 						</array>
 						<reference key="parent" ref="678803503"/>
 					</object>
@@ -1039,10 +1043,10 @@
 						<int key="objectID">337</int>
 						<reference key="object" ref="283739287"/>
 						<array class="NSMutableArray" key="children">
-							<reference ref="20262740"/>
-							<reference ref="848268677"/>
 							<reference ref="160641088"/>
 							<reference ref="303110400"/>
+							<reference ref="848268677"/>
+							<reference ref="20262740"/>
 						</array>
 						<reference key="parent" ref="905093355"/>
 					</object>
@@ -1193,9 +1197,11 @@
 				<boolean value="YES" key="21.NSWindowTemplate.visibleAtLaunch"/>
 				<string key="210.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="213.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<string key="215.IBPersistedLastKnownCanvasPosition">{580, 262.5}</string>
 				<string key="215.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="215.IBWindowTemplateEditedContentRect">{{86, 499}, {480, 119}}</string>
 				<boolean value="NO" key="215.NSWindowTemplate.visibleAtLaunch"/>
+				<reference key="216.IBNSViewMetadataGestureRecognizers" ref="0"/>
 				<string key="216.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="217.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="218.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -1209,7 +1215,7 @@
 				<string key="328.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="329.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="331.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
-				<string key="336.IBPersistedLastKnownCanvasPosition">{335, 308.5}</string>
+				<string key="336.IBPersistedLastKnownCanvasPosition">{580, -84.5}</string>
 				<string key="336.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="336.IBWindowTemplateEditedContentRect">{{86, 499}, {480, 119}}</string>
 				<boolean value="NO" key="336.NSWindowTemplate.visibleAtLaunch"/>
@@ -1273,8 +1279,6 @@
 						<string key="showLocationSheet:">id</string>
 						<string key="showPreferencePanel:">id</string>
 						<string key="showUsernameSheet:">id</string>
-						<string key="toggleBorderlessWindow:">id</string>
-						<string key="toggleCropUnderTitleBar:">id</string>
 					</dictionary>
 					<dictionary class="NSMutableDictionary" key="actionInfosByName">
 						<object class="IBActionInfo" key="cancelFollowSheet:">
@@ -1315,14 +1319,6 @@
 						</object>
 						<object class="IBActionInfo" key="showUsernameSheet:">
 							<string key="name">showUsernameSheet:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="toggleBorderlessWindow:">
-							<string key="name">toggleBorderlessWindow:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="toggleCropUnderTitleBar:">
-							<string key="name">toggleCropUnderTitleBar:</string>
 							<string key="candidateClassName">id</string>
 						</object>
 					</dictionary>
@@ -1383,8 +1379,6 @@
 						<string key="showLocationSheet:">id</string>
 						<string key="showPreferencePanel:">id</string>
 						<string key="showUsernameSheet:">id</string>
-						<string key="toggleBorderlessWindow:">id</string>
-						<string key="toggleCropUnderTitleBar:">id</string>
 					</dictionary>
 					<dictionary class="NSMutableDictionary" key="actionInfosByName">
 						<object class="IBActionInfo" key="cancelFollowSheet:">
@@ -1425,14 +1419,6 @@
 						</object>
 						<object class="IBActionInfo" key="showUsernameSheet:">
 							<string key="name">showUsernameSheet:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="toggleBorderlessWindow:">
-							<string key="name">toggleBorderlessWindow:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="toggleCropUnderTitleBar:">
-							<string key="name">toggleCropUnderTitleBar:</string>
 							<string key="candidateClassName">id</string>
 						</object>
 					</dictionary>
