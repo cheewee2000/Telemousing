@@ -9,7 +9,6 @@
 #import <Cocoa/Cocoa.h>
 #import <WebKit/WebView.h>
 #import <WebKit/WebFrame.h>
-#import "TransparentMouse.h"
 
 @class PreferenceController;
 
@@ -46,6 +45,9 @@ extern NSString *const TWVMainTransparantWindowFrameKey;
 
 }
 
+//@property (strong)  TransparentMouse *mouseWindow;
+
+    
 @property (strong) IBOutlet NSWindow *window;
 @property (weak) IBOutlet WebView *theWebView;
 

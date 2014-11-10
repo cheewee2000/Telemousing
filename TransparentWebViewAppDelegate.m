@@ -48,7 +48,7 @@ CGFloat const titleBarHeight = 22.0f;
 	[[NSUserDefaults standardUserDefaults] registerDefaults:defaultValues];
 	
 	// Set the url from the Preferences file
-	self.urlString = [[NSUserDefaults standardUserDefaults] objectForKey:TWVLocationUrlKey];
+	//self.urlString = [[NSUserDefaults standardUserDefaults] objectForKey:TWVLocationUrlKey];
     self.usernameString = [[NSUserDefaults standardUserDefaults] objectForKey:usernameKey];
     self.followString = [[NSUserDefaults standardUserDefaults] objectForKey:followKey];
 
@@ -76,21 +76,8 @@ CGFloat const titleBarHeight = 22.0f;
                                     repeats:YES];
     
 
-    
-//    mouseWindow = [[TransparentMouse alloc]initWithContentRect:CGRectMake(0, 0, 100, 100)
-//                                                         styleMask:NSBorderlessWindowMask
-//                                                           backing:NSBackingStoreBuffered
-//                                                             defer:NO];
-//    
-//    [mouseWindow setFrame:newFrame display:YES];
-    
-    
 
 
-    //inital position
-    followX=screenRect.size.width*.2;
-    followY=screenRect.size.height*.2;
-    [self moveMouse];
     [self subscribePubNub];
     
 	return self;
@@ -216,8 +203,14 @@ CGFloat const titleBarHeight = 22.0f;
     }
     
 
-    
+
     NSLog(@"width %f",screenRect.size.width);
+    
+    
+    //inital position
+    followX=.2;
+    followY=.3;
+    [self moveMouse];
     
     
 }
