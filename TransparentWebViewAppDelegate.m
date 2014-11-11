@@ -66,14 +66,14 @@ CGFloat const titleBarHeight = 22.0f;
     [self initPubNub];
     
     // Broadcast my mouse position
-    [NSTimer scheduledTimerWithTimeInterval:.2
+    [NSTimer scheduledTimerWithTimeInterval:.1
                                      target:self
                                    selector:@selector(broadcastMouse)
                                    userInfo:nil
                                     repeats:YES];
     
     // Update mouse position received
-    [NSTimer scheduledTimerWithTimeInterval:.2
+    [NSTimer scheduledTimerWithTimeInterval:.1
                                      target:self
                                    selector:@selector(moveMouse)
                                    userInfo:nil
