@@ -12,9 +12,72 @@
 #import "NSData+PNAdditions.h"
 
 
+#pragma mark - Public dispatch objects wrapper declaration
+
+@interface PNDispatchObjectWrapper ()
+
+#pragma mark - Properties
+
+@property (nonatomic, pn_dispatch_property_ownership) dispatch_queue_t queue;
+
+
+#pragma mark - Instance methods
+
+/**
+ Initialize wrapper around provided object.
+ 
+ @param object
+ \a GCD object which should be stored inside wrapper.
+ 
+ @return Reference on wrapper which will store \a GCD object for us.
+ */
+- (id)initWithGCDObject:(dispatch_queue_t)queue;
+
+#pragma mark -
+
+
+@end
+
+
+@implementation PNDispatchObjectWrapper : NSObject
+
+
+#pragma mark - Class methods
+
++ (PNDispatchObjectWrapper *)wrapperForObject:(dispatch_queue_t)queue {
+    
+    return (queue ? [[self alloc] initWithGCDObject:queue] : nil);
+}
+
+- (id)initWithGCDObject:(dispatch_queue_t)queue {
+    
+    // Check whether initializatino has been successful or not
+    if ((self = [super init])) {
+        
+        self.queue = queue;
+        [PNDispatchHelper retain:_queue];
+    }
+    
+    
+    return self;
+}
+
+- (void)dealloc {
+    
+    [PNDispatchHelper release:_queue];
+    _queue = NULL;
+}
+
+#pragma mark -
+
+
+@end
+
+
 #pragma mark - Public dispatch objects helper implementation
 
 @implementation PNDispatchHelper
+
 
 #pragma mark - Class methods
 
@@ -150,6 +213,43 @@
 
 @end
 
+
+#pragma mark - UIApplication replacement helper declaration
+
+@implementation PNApplicationHelper : NSObject
+
+
+#pragma mark - Class methods
+
++ (BOOL)pn_canRunInBackground {
+    
+    static BOOL canRunInBackground;
+    static dispatch_once_t dispatchOnceToken;
+    dispatch_once(&dispatchOnceToken, ^{
+        
+        // Retrieve application information Property List
+        NSDictionary *applicationInformation = [[NSBundle mainBundle] infoDictionary];
+        
+        if ([applicationInformation objectForKey:@"UIBackgroundModes"]) {
+            
+            NSArray *backgroundModes = [applicationInformation valueForKey:@"UIBackgroundModes"];
+            NSArray *suitableModes = @[@"audio", @"location", @"voip", @"bluetooth-central", @"bluetooth-peripheral"];
+            [backgroundModes enumerateObjectsUsingBlock:^(id mode, NSUInteger modeIdx, BOOL *modeEnumeratorStop) {
+                
+                canRunInBackground = [suitableModes containsObject:mode];
+                *modeEnumeratorStop = canRunInBackground;
+            }];
+        }
+    });
+    
+    
+    return canRunInBackground;
+}
+
+#pragma mark -
+
+
+@end
 
 
 #pragma mark - Helper private interface declaration
