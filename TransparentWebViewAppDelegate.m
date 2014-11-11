@@ -129,8 +129,9 @@ CGFloat const titleBarHeight = 22.0f;
     //NSLog(@"%@ x %f, y %f",[self usernameString], [NSEvent mouseLocation].x, [NSEvent mouseLocation].y);
     
     // Normalize mouse position
-    CGFloat x = [NSEvent mouseLocation].x / screenRect.size.width;
-    CGFloat y = [NSEvent mouseLocation].y / screenRect.size.height;
+    CGFloat x = [NSEvent mouseLocation].x / (float)screenRect.size.width;
+    CGFloat y = [NSEvent mouseLocation].y / (float)screenRect.size.height;
+    
     
     // Send mouse position w/ pubnub (published under chosen username?
     NSLog(@"sending x %f, y %f", x, y);
