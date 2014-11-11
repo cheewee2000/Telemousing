@@ -119,7 +119,7 @@ CGFloat const titleBarHeight = 22.0f;
 -(void)moveMouse{
     NSRect frame = [window frame];
     frame.origin.x=followX*screenRect.size.width;
-    frame.origin.y=followY*screenRect.size.height;
+    frame.origin.y=followY*screenRect.size.height-46;
     [window setFrame:frame display:YES animate:YES];
 }
 
