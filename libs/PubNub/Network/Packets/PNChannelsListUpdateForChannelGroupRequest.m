@@ -140,7 +140,8 @@ struct PNChannelListModificationTypeStruct PNChannelListModificationType = {
     
     return [NSString stringWithFormat:@"/v1/channel-registration/sub-key/%@/%@channel-group/%@?%@=%@&callback=%@_%@%@&pnsdk=%@",
             [self.subscriptionKey pn_percentEscapedString],
-            (self.change.group.nspace ? [NSString stringWithFormat:@"namespace/%@/", [self.change.group.nspace pn_percentEscapedString]] : @""),
+            ([self.change.group.nspace length] ? [NSString stringWithFormat:@"namespace/%@/",
+                                                  [self.change.group.nspace pn_percentEscapedString]] : @""),
             [self.change.group.groupName pn_percentEscapedString], self.targetAction,
             [[self.change.channels valueForKey:@"escapedName"] componentsJoinedByString:@","], [self callbackMethodName],
             self.shortIdentifier, ([self authorizationField] ? [NSString stringWithFormat:@"&%@", [self authorizationField]] : @""),

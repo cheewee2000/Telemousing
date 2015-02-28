@@ -16,6 +16,29 @@
 @class PNRequestsQueue;
 
 
+#pragma mark - Structures
+
+struct PNRequestForRescheduleStructure {
+
+    /**
+     @brief Under this key stored original request which should be rescheduled
+
+     @since 3.7.7
+     */
+    __unsafe_unretained NSString *request;
+
+    /**
+     @brief Under this key stored flag which tell whether client is waiting for request completion
+            or not.
+
+     @since 3.7.7
+     */
+    __unsafe_unretained NSString *isWaitingForCompletion;
+};
+
+extern struct PNRequestForRescheduleStructure PNRequestForReschedule;
+
+
 @interface PNConnectionChannel (Protected)
 
 
@@ -67,8 +90,11 @@
  * Retrieve reference on request which was stored by communication channel by it's identifier
  */
 - (PNBaseRequest *)storedRequestWithIdentifier:(NSString *)identifier;
+
 - (PNBaseRequest *)nextStoredRequest;
+
 - (PNBaseRequest *)nextStoredRequestAfter:(PNBaseRequest *)request;
+
 - (PNBaseRequest *)lastStoredRequest;
 - (BOOL)isWaitingStoredRequestCompletion:(NSString *)identifier;
 - (void)removeStoredRequest:(PNBaseRequest *)request;
@@ -86,9 +112,23 @@
 - (NSArray *)requestsWithClass:(Class)requestClass;
 
 /**
+ @brief This method allow to gather all required information which is required during request
+        reschedule process.
+
+ @param requestIdentifiers List of request identifiers for which actual requests and additional
+                           information should be gathered.
+
+ @return List of \b PNBaseRequest along with additional information inside of \a NSDictionary
+         instances.
+
+ @since 3.7.7
+ */
+- (NSArray *)requestForRescheduleByIdentifiers:(NSArray *)requestIdentifiers;
+
+/**
  Close only connection w/o any further notification to the user.
  */
-- (void)disconnectOnInternalRequest;
+- (void)terminateConnection;
 
 /**
  Closing connection to the server. Requests queue won't be flushed.
@@ -100,13 +140,28 @@
 /**
  * Reconnect main communication channel on which this communication channel is working
  */
-- (void)reconnect;
+- (void)reconnectWithBlock:(dispatch_block_t)processReportBlock;
 
 
 #pragma mark - Misc methods
 
+/**
+* Check whether connection channel connected and ready for work
+*/
+- (BOOL)isConnected;
+
 - (BOOL)isConnecting;
 - (BOOL)isReconnecting;
+
+- (BOOL)isSuspending;
+- (BOOL)isSuspended;
+- (BOOL)isResuming;
+
+/**
+* Check whether connection channel disconnected
+*/
+- (BOOL)isDisconnected;
+
 - (BOOL)isDisconnecting;
 
 /**

@@ -122,7 +122,7 @@
     
     if (_preparedMessage == nil) {
         
-        id message = self.message.message;
+        id message = self.message.encryptedMessage;
         
         if ([self HTTPMethod] == PNRequestGETMethod) {
             

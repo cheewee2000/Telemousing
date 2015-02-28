@@ -60,12 +60,6 @@
 #pragma mark - Messages processing methods
 
 /**
- * Generate object sending request to specified channel
- */
-- (PNMessage *)sendMessage:(id)object toChannel:(PNChannel *)channel compressed:(BOOL)shouldCompressMessage
-            storeInHistory:(BOOL)shouldStoreInHistory;
-
-/**
  * Sends configured message request to the PubNub service
  */
 - (void)sendMessage:(PNMessage *)message;

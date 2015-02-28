@@ -36,9 +36,11 @@
 struct PNMessageDataKeysStruct PNMessageDataKeys = {
 
     .message = @"message",
+    .encryptedMessage = @"emessage",
     .channel = @"channel",
     .compress = @"compressed",
     .store = @"store",
+    .contentEncrypted = @"encrypted",
     .date = @"date"
 };
 
@@ -54,7 +56,9 @@ struct PNMessageDataKeysStruct PNMessageDataKeys = {
 @property (nonatomic, strong) PNChannelGroup *channelGroup;
 @property (nonatomic, assign, getter = shouldCompressMessage) BOOL compressMessage;
 @property (nonatomic, assign, getter = shouldStoreInHistory) BOOL storeInHistory;
+@property (nonatomic, assign, getter = isContentEncrypted) BOOL contentEncrypted;
 @property (nonatomic, strong) id message;
+@property (nonatomic, strong) id encryptedMessage;
 @property (nonatomic, strong) PNDate *receiveDate;
 @property (nonatomic, strong) PNDate *date;
 @property (nonatomic, strong) NSNumber *timeToken;
@@ -78,10 +82,10 @@ struct PNMessageDataKeysStruct PNMessageDataKeys = {
     PNMessage *messageObject = nil;
     BOOL isValidMessage = NO;
 #ifndef CRYPTO_BACKWARD_COMPATIBILITY_MODE
-    object = object?[PNJSONSerialization stringFromJSONObject:object]:@"";
-    if (![object isKindOfClass:[NSNumber class]]) {
+    id objectForValidation = (object ? [PNJSONSerialization stringFromJSONObject:object] : @"");
+    if (![objectForValidation isKindOfClass:[NSNumber class]]) {
 
-        isValidMessage = [[object stringByReplacingOccurrencesOfString:@" " withString:@""] length] > 0;
+        isValidMessage = [[objectForValidation stringByReplacingOccurrencesOfString:@" " withString:@""] length] > 0;
     }
     else {
 
@@ -94,7 +98,8 @@ struct PNMessageDataKeysStruct PNMessageDataKeys = {
     // Ensure that all parameters provided and they are valid or not
     if (isValidMessage && channel != nil) {
 
-        messageObject = [[[self class] alloc] initWithObject:object forChannel:channel compressed:shouldCompressMessage
+        messageObject = [[[self class] alloc] initWithObject:object forChannel:channel
+                                                  compressed:shouldCompressMessage
                                               storeInHistory:shouldStoreInHistory];
     }
     // Looks like some conditions not met
@@ -121,15 +126,17 @@ struct PNMessageDataKeysStruct PNMessageDataKeys = {
     return messageObject;
 }
 
-+ (PNMessage *)messageFromServiceResponse:(id)messageBody onChannel:(PNChannel *)channel atDate:(PNDate *)messagePostDate {
++ (PNMessage *)messageFromServiceResponse:(id)messageBody onChannel:(PNChannel *)channel
+                                   atDate:(PNDate *)messagePostDate {
     
-    return [self messageFromServiceResponse:messageBody onChannel:channel channelGroup:nil atDate:messagePostDate];
+    return [self messageFromServiceResponse:messageBody onChannel:channel channelGroup:nil
+                                     atDate:messagePostDate];
 }
 
 + (PNMessage *)messageFromServiceResponse:(id)messageBody onChannel:(PNChannel *)channel
                              channelGroup:(PNChannelGroup *)group atDate:(PNDate *)messagePostDate {
     
-    PNMessage *message = [[self class] new];
+    PNMessage *message = [self new];
     
     // Check whether message body contains time token included from history API or not
     if ([messageBody isKindOfClass:[NSDictionary class]]) {
@@ -147,6 +154,7 @@ struct PNMessageDataKeysStruct PNMessageDataKeys = {
     }
     
     message.message = messageBody;
+    message.encryptedMessage = messageBody;
     message.channel = channel;
     message.channelGroup = group;
     message.receiveDate = messagePostDate;
@@ -184,6 +192,10 @@ struct PNMessageDataKeysStruct PNMessageDataKeys = {
         if ((self = [super init])) {
 
             self.message = [decoder decodeObjectForKey:PNMessageDataKeys.message];
+            if ([decoder containsValueForKey:PNMessageDataKeys.encryptedMessage]) {
+
+                self.encryptedMessage = [decoder decodeObjectForKey:PNMessageDataKeys.encryptedMessage];
+            }
             self.channel = [PNChannel channelWithName:[decoder decodeObjectForKey:PNMessageDataKeys.channel]];
 
             if ([decoder containsValueForKey:PNMessageDataKeys.date]) {
@@ -192,6 +204,10 @@ struct PNMessageDataKeysStruct PNMessageDataKeys = {
             }
             self.compressMessage = [[decoder decodeObjectForKey:PNMessageDataKeys.compress] boolValue];
             self.storeInHistory = [[decoder decodeObjectForKey:PNMessageDataKeys.store] boolValue];
+            if ([decoder containsValueForKey:PNMessageDataKeys.contentEncrypted]) {
+
+                self.contentEncrypted = [[decoder decodeObjectForKey:PNMessageDataKeys.contentEncrypted] boolValue];
+            }
         }
     }
     else {
@@ -208,11 +224,9 @@ struct PNMessageDataKeysStruct PNMessageDataKeys = {
 
     // Check whether initialization was successful or not
     if ((self = [super init])) {
-#ifndef CRYPTO_BACKWARD_COMPATIBILITY_MODE
-        self.message = [PNJSONSerialization stringFromJSONObject:object];
-#else
-        self.message = [PNCryptoHelper sharedInstance].isReady ? object : [PNJSONSerialization stringFromJSONObject:object];
-#endif
+
+        self.message = object;
+        self.encryptedMessage = object;
         self.channel = channel;
         self.compressMessage = shouldCompressMessage;
         self.storeInHistory = shouldStoreInHistory;
@@ -247,6 +261,7 @@ struct PNMessageDataKeysStruct PNMessageDataKeys = {
 - (void)encodeWithCoder:(NSCoder *)coder {
 
     [coder encodeObject:self.message forKey:PNMessageDataKeys.message];
+    [coder encodeObject:self.encryptedMessage forKey:PNMessageDataKeys.encryptedMessage];
     [coder encodeObject:self.channel.name forKey:PNMessageDataKeys.channel];
 
     if (self.receiveDate) {
@@ -255,6 +270,7 @@ struct PNMessageDataKeysStruct PNMessageDataKeys = {
     }
     [coder encodeObject:@(self.shouldCompressMessage) forKey:PNMessageDataKeys.compress];
     [coder encodeObject:@(self.shouldStoreInHistory) forKey:PNMessageDataKeys.store];
+    [coder encodeObject:@(self.isContentEncrypted) forKey:PNMessageDataKeys.contentEncrypted];
 }
 
 - (NSString *)description {

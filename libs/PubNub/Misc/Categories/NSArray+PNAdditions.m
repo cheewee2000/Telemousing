@@ -42,7 +42,7 @@
 
 - (NSString *)logDescription {
     
-    __block NSString *logDescription = @"<[";
+    NSMutableString *logDescription = [NSMutableString stringWithString:@"<["];
     
     [self enumerateObjectsUsingBlock:^(id entry, NSUInteger entryIdx, BOOL *entryEnumeratorStop) {
         
@@ -52,8 +52,9 @@
             entry = [entry performSelector:@selector(logDescription)];
             entry = (entry ? entry : @"");
         }
-        logDescription = [logDescription stringByAppendingFormat:@"%@%@", entry, (entryIdx + 1 != [self count] ? @"|" : @"]>")];
+        [logDescription appendFormat:@"%@%@", entry, (entryIdx + 1 != [self count] ? @"|" : @"")];
     }];
+    [logDescription appendString:@"]>"];
     
     
     return logDescription;

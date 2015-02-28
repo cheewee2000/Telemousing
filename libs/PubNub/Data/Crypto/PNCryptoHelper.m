@@ -14,6 +14,7 @@
 #import <CommonCrypto/CommonHMAC.h>
 #import "NSString+PNAddition.h"
 #import "NSData+PNAdditions.h"
+#import "PNLogger+Protected.h"
 #import "PNPrivateImports.h"
 #import "PNLoggerSymbols.h"
 
