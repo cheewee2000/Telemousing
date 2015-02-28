@@ -36,73 +36,32 @@
 
 + (PNChannelGroup *)channelGroupWithName:(NSString *)name {
     
-    return [self channelGroupWithName:name inNamespace:nil shouldObservePresence:NO
-    shouldUpdatePresenceObservingFlag:NO];
+    return [self channelGroupWithName:name shouldObservePresence:NO];
 }
 
 + (PNChannelGroup *)channelGroupWithName:(NSString *)name shouldObservePresence:(BOOL)observePresence {
     
-    return [self channelGroupWithName:name inNamespace:nil shouldObservePresence:observePresence
-    shouldUpdatePresenceObservingFlag:YES];
+    return [self channelGroupWithName:name inNamespace:nil shouldObservePresence:observePresence];
 }
 
 + (PNChannelGroup *)channelGroupWithName:(NSString *)name inNamespace:(NSString *)nspace {
     
-    return [self channelGroupWithName:name inNamespace:nspace shouldObservePresence:NO
-    shouldUpdatePresenceObservingFlag:NO];
+    return [self channelGroupWithName:name inNamespace:nspace shouldObservePresence:NO];
 }
 
 + (PNChannelGroup *)channelGroupWithName:(NSString *)name inNamespace:(NSString *)nspace
                    shouldObservePresence:(BOOL)observePresence {
     
-    return [self channelGroupWithName:name inNamespace:nspace shouldObservePresence:observePresence
-    shouldUpdatePresenceObservingFlag:YES];
-}
-
-+ (PNChannelGroup *)channelGroupWithName:(NSString *)name inNamespace:(NSString *)nspace
-                   shouldObservePresence:(BOOL)observePresence
-       shouldUpdatePresenceObservingFlag:(BOOL)shouldUpdatePresenceObservingFlag {
-    
-    BOOL isValidName = YES;
     NSString *channelName = name;
-    if (name && [name rangeOfString:@":"].location != NSNotFound) {
+    if (channelName && nspace) {
         
-        if ([name isEqualToString:@":"]) {
-            
-            nspace = name;
-            name = nil;
-        }
-        else {
-            
-            NSArray *channelGroupNameComponents = [name componentsSeparatedByString:@":"];
-            isValidName = ([channelGroupNameComponents count] <= 2);
-            if (isValidName) {
-                
-                nspace = ([[channelGroupNameComponents objectAtIndex:0] length] ?
-                          [channelGroupNameComponents objectAtIndex:0] : nil);
-                name = ([[channelGroupNameComponents lastObject] length] ? [channelGroupNameComponents lastObject] : nil);
-                nspace = ([nspace length] ? nspace : nil);
-                if (!name && nspace) {
-                    
-                    channelName = [nspace stringByAppendingString:@":"];
-                }
-            }
-        }
+        channelName = [NSString stringWithFormat:@"%@:%@", nspace, channelName];
     }
-    else {
+    if (!channelName && nspace) {
         
-        nspace = ([nspace length] ? nspace : nil);
-        channelName = ([channelName length] ? channelName : nil);
-        if (channelName && nspace) {
+        if (![nspace isEqualToString:@":"]) {
             
-            channelName = [NSString stringWithFormat:@"%@:%@", nspace, channelName];
-        }
-        if (!channelName && nspace) {
-            
-            if (![nspace isEqualToString:@":"]) {
-                
-                channelName = [nspace stringByAppendingString:@":"];
-            }
+            channelName = [nspace stringByAppendingString:@":"];
         }
     }
     if (!channelName) {
@@ -110,25 +69,19 @@
         channelName = @":";
     }
     
-    PNChannelGroup *channel = nil;
-    if (isValidName) {
+    id <PNChannelProtocol> (^channelCreateBlock)(void) = ^{
         
-        id <PNChannelProtocol> (^channelCreateBlock)(void) = ^{
-            
-            return [self channelWithName:channelName shouldObservePresence:observePresence
-       shouldUpdatePresenceObservingFlag:shouldUpdatePresenceObservingFlag];
-        };
+        return [self channelWithName:channelName shouldObservePresence:observePresence];
+    };
+    PNChannelGroup *channel = channelCreateBlock();
+    if (![channel isKindOfClass:self]) {
         
+        [self removeChannelFromCache:channel];
         channel = channelCreateBlock();
-        if (![channel isKindOfClass:self]) {
-            
-            [self removeChannelFromCache:channel];
-            channel = channelCreateBlock();
-        }
-        channel.channelGroup = YES;
-        channel.groupName = ([name length] ? name : nil);
-        channel.nspace = ([nspace length] ? nspace : nil);
     }
+    channel.channelGroup = YES;
+    channel.groupName = name;
+    channel.nspace = nspace;
     
     
     return channel;

@@ -29,7 +29,7 @@
  @return NSDictionary instance or \c nil (if there is no state in cache) with cached state which is stored
  individually for each channel who's name used as key.
  */
-- (void)clientState:(void (^)(NSDictionary *clientState))fetchCompletionBlock;
+- (NSDictionary *)state;
 
 /**
  Method allow to fetch all state which hasb been cached and merge it with provided. It will clean up resulting dictionary from 
@@ -41,7 +41,7 @@
  
  @return Cleaned up state dictionary.
  */
-- (void)stateMergedWithState:(NSDictionary *)state withBlock:(void (^)(NSDictionary *mergedState))mergeCompletionBlock;
+- (NSDictionary *)stateMergedWithState:(NSDictionary *)state;
 
 /**
  Method allow to update cached state for concrete channel.
@@ -74,6 +74,17 @@
 - (void)storeClientState:(NSDictionary *)clientState forChannels:(NSArray *)channels;
 
 /**
+ Method allow to fetch state for concrete channel.
+
+ @param channel
+ \b PNChannel instance for which state should be retrieved from cache.
+
+ @return \b NSDictionary instance with state for specified channel or \c nil of there is no state for specified
+ channel.
+ */
+- (NSDictionary *)stateForChannel:(PNChannel *)channel;
+
+/**
  Method allow to fetch state for set of channels.
 
  @param channels
@@ -82,7 +93,7 @@
  @return \b NSDictionary with state for all requested channels (for those which doesn't have cached state
  there will be no values).
  */
-- (void)stateForChannels:(NSArray *)channels withBlock:(void (^)(NSDictionary *stateOnChannel))fetchCompletionBlock;
+- (NSDictionary *)stateForChannels:(NSArray *)channels;
 
 /**
  Method allow to remove state from cache for concrete channels.

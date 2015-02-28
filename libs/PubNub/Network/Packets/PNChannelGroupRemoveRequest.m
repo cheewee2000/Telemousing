@@ -58,8 +58,7 @@
 
     return [NSString stringWithFormat:@"/v1/channel-registration/sub-key/%@/%@channel-group/%@/remove?callback=%@_%@%@&pnsdk=%@",
             [self.subscriptionKey pn_percentEscapedString],
-            ([self.group.nspace length] ? [NSString stringWithFormat:@"namespace/%@/",
-                                           [self.group.nspace pn_percentEscapedString]] : @""),
+            (self.group.nspace ? [NSString stringWithFormat:@"namespace/%@/", [self.group.nspace pn_percentEscapedString]] : @""),
             [self.group.groupName pn_percentEscapedString], [self callbackMethodName], self.shortIdentifier,
             ([self authorizationField] ? [NSString stringWithFormat:@"&%@", [self authorizationField]] : @""),
             [self clientInformationField]];

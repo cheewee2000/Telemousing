@@ -85,15 +85,16 @@
 
 - (NSString *)pn_percentEscapedStringWithEscapeString:(NSString *)stringWithCharsForEscape {
 
-    NSString *escapedString = CFBridgingRelease(CFURLCreateStringByAddingPercentEscapes(kCFAllocatorDefault,
-                                                (__bridge CFStringRef)self, NULL,
-                                                (CFStringRef)stringWithCharsForEscape,
-                                                kCFStringEncodingUTF8));
-    NSString *newlineEscapedString = [escapedString stringByReplacingOccurrencesOfString:@"%0A" withString:@"%5Cn"];
-    newlineEscapedString = [newlineEscapedString stringByReplacingOccurrencesOfString:@"%0D" withString:@"%5Cr"];
+    NSString *newlineEscapedString = [self stringByReplacingOccurrencesOfString:@"\n" withString:@"%5Cn"];
+    newlineEscapedString = [newlineEscapedString stringByReplacingOccurrencesOfString:@"\r" withString:@"%5Cr"];
+    CFStringRef escapedString = CFURLCreateStringByAddingPercentEscapes(kCFAllocatorDefault,
+                                                                        (__bridge CFStringRef)newlineEscapedString,
+                                                                        NULL,
+                                                                        (CFStringRef)stringWithCharsForEscape,
+                                                                        kCFStringEncodingUTF8);
 
 
-    return newlineEscapedString;
+    return CFBridgingRelease(escapedString);
 }
 
 - (NSString *)pn_ASCIIString {

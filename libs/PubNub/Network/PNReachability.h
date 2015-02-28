@@ -52,26 +52,25 @@
 - (void)restartServiceReachabilityMonitoring;
 - (void)stopServiceReachabilityMonitoring;
 - (void)suspend;
-- (void)checkSuspended:(void (^)(BOOL suspended))checkCompletionBlock;
+- (BOOL)isSuspended;
 - (void)resume;
 
 /**
  * Check whether service reachability check performed or not
  */
-- (void)checkServiceReachabilityChecked:(void (^)(BOOL checked))checkCompletionBlock;
+- (BOOL)isServiceReachabilityChecked;
 
 /**
  * Check whether PubNub service can be reached now or not
  */
-- (void)checkServiceAvailable:(void (^)(BOOL available))checkCompletionBlock;
+- (BOOL)isServiceAvailable;
 
 /**
  * Force reachability monitor to perform reachability check w/o any callbacks.
  * Return whether reachability refresh in it turn cause reachability state change event generation or not.
  */
-- (void)refreshReachabilityState:(void (^)(BOOL willGenerateReachabilityChangeEvent))refreshCompletionBlock;
-- (void)refreshReachabilityStateWithEvent:(BOOL)shouldGenerateReachabilityChangeEvent
-                                 andBlock:(void (^)(BOOL willGenerateReachabilityChangeEvent))refreshCompletionBlock;
+- (BOOL)refreshReachabilityState;
+- (BOOL)refreshReachabilityStateWithEvent:(BOOL)shouldGenerateReachabilityChangeEvent;
 
 /**
  * Allow to update current reachability state according to the error object (there is some situation when sockets may go down

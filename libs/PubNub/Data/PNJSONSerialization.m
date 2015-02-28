@@ -246,14 +246,12 @@
     BOOL isJSONString = [object isKindOfClass:[NSNumber class]];
     if ([object isKindOfClass:[NSString class]] && [(NSString *)object length] > 0) {
 
-        unichar expectedCloseingChar;
         unichar nodeStartChar = [(NSString *)object characterAtIndex:0];
         unichar nodeClosingChar = [(NSString *)object characterAtIndex:([(NSString *)object length] - 1)];
-        isJSONString = (nodeStartChar == '"' || nodeStartChar == '[' || nodeStartChar == '{');
+        isJSONString = nodeStartChar == '"' || nodeStartChar == '[' || nodeStartChar == '{';
         if (isJSONString) {
-            
-            expectedCloseingChar = (nodeStartChar == '"' ? '"' : (nodeStartChar == '[' ? ']' : '}'));
-            isJSONString = (nodeClosingChar == expectedCloseingChar);
+
+            isJSONString = nodeClosingChar == '"' || nodeClosingChar == ']' || nodeClosingChar == '}';
         }
     }
 

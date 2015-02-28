@@ -59,28 +59,29 @@
 
 #pragma mark - Connection management
 
-- (void)connectWithResult:(void (^)(BOOL connecting))resultBlock;
-- (void)checkConnected:(void (^)(BOOL connected))checkCompletionBlock;
+- (BOOL)connect;
+- (BOOL)canRetryConnection;
+- (void)retryConnection;
+- (BOOL)isConnected;
 
 - (void)disconnect;
-- (void)checkDisconnected:(void (^)(BOOL disconnected))checkCompletionBlock;
+- (BOOL)isDisconnected;
 
 /**
  * Reconnect sockets and streams by user request
  */
-- (void)reconnectWithBlock:(dispatch_block_t)processReportBlock;
+- (void)reconnect;
 
 /**
  * Suspend sockets (basically they will be closed w/o PNConnection instance destroy)
  */
 - (void)suspend;
-- (void)checkSuspended:(void (^)(BOOL suspended))checkCompletionBlock;
+- (BOOL)isSuspended;
 
 /**
  * Restore default sockets functions (sockets connection will be up again)
  */
 - (void)resume;
-- (void)checkResuming:(void (^)(BOOL resuming))checkCompletionBlock;
 
 #pragma mark -
 

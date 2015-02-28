@@ -19,7 +19,6 @@
 #pragma mark - Properties
 
 @property (nonatomic, pn_dispatch_property_ownership) dispatch_queue_t queue;
-@property (nonatomic, strong) NSValue *specificKeyPointer;
 
 
 #pragma mark - Instance methods
@@ -27,12 +26,12 @@
 /**
  Initialize wrapper around provided object.
  
- @param object  \a GCD object which should be stored inside wrapper.
- @param pointer Reference on value which store pointer used during set specific operation on queue.
+ @param object
+ \a GCD object which should be stored inside wrapper.
  
  @return Reference on wrapper which will store \a GCD object for us.
  */
-- (id)initWithGCDObject:(dispatch_queue_t)queue specificKey:(NSValue *)pointer;
+- (id)initWithGCDObject:(dispatch_queue_t)queue;
 
 #pragma mark -
 
@@ -45,18 +44,17 @@
 
 #pragma mark - Class methods
 
-+ (PNDispatchObjectWrapper *)wrapperForObject:(dispatch_queue_t)queue specificKey:(NSValue *)pointer {
++ (PNDispatchObjectWrapper *)wrapperForObject:(dispatch_queue_t)queue {
     
-    return (queue ? [[self alloc] initWithGCDObject:queue specificKey:pointer] : nil);
+    return (queue ? [[self alloc] initWithGCDObject:queue] : nil);
 }
 
-- (id)initWithGCDObject:(dispatch_queue_t)queue specificKey:(NSValue *)pointer {
+- (id)initWithGCDObject:(dispatch_queue_t)queue {
     
     // Check whether initializatino has been successful or not
     if ((self = [super init])) {
         
         self.queue = queue;
-        self.specificKeyPointer = pointer;
         [PNDispatchHelper retain:_queue];
     }
     
@@ -82,15 +80,6 @@
 
 
 #pragma mark - Class methods
-
-+ (dispatch_queue_t)serialQueueWithIdentifier:(NSString *)identifier {
-
-    NSString *queueIdentifier = [NSString stringWithFormat:@"com.pubnub.%@.%@", identifier, [PNHelper UUID]];
-    const char *cQueueIdentifier = [queueIdentifier UTF8String];
-
-
-    return dispatch_queue_create(cQueueIdentifier, DISPATCH_QUEUE_SERIAL);
-}
 
 + (void)retain:(dispatch_object_t)dispatchObject {
     

@@ -9,7 +9,6 @@
 #import "PNResponse+Protected.h"
 #import "PNErrorResponseParser+Protected.h"
 #import "PNJSONSerialization.h"
-#import "PNLogger+Protected.h"
 #import "PNRequestsImport.h"
 #import "PNLoggerSymbols.h"
 #import "PNErrorCodes.h"
@@ -277,10 +276,8 @@ struct PNServiceResponseCallbacksStruct PNServiceResponseCallbacks = {
         // Check whether response contains information about whether this is warning clarification or not.
         if ([[processedData objectForKey:PNServiceResponseServiceDataKeys.warningState] boolValue]) {
 
-            [PNLogger logGeneralMessageFrom:self message:^NSString *{
-                return [NSString stringWithFormat:@"\n\n==================== PubNub PAM ====================\n%@\n====================================================\n\n",
-                        self.message];
-            }];
+            PNLog(PNLogGeneralLevel, self, @"\n\n==================== PubNub PAM ====================\n%@\n====================================================\n\n",
+                  self.message);
             [processedData removeObjectForKey:PNServiceResponseServiceDataKeys.warningState];
         }
 
@@ -389,19 +386,11 @@ struct PNServiceResponseCallbacksStruct PNServiceResponseCallbacks = {
 
 - (NSString *)logDescription {
     
-    id response = [NSNull null];
-    // Check whether parameter can be transformed for log or not
-    if (self.response && [self.response respondsToSelector:@selector(logDescription)]) {
-        
-        response = [self.response performSelector:@selector(logDescription)];
-        response = (response ? response : @"");
-    }
-    
     return [NSString stringWithFormat:@"<%ld|%@|%@|%@|%ld|%ld|%@|%@|%@|%@>", (long)self.statusCode, (self.message ? self.message : [NSNull null]),
             @(self.isErrorResponse), @(self.isLastResponseOnConnection), (unsigned long)[self.content length],
             (unsigned long)self.size, (self.callbackMethod ? self.callbackMethod : [NSNull null]),
             (self.serviceName ? self.serviceName : [NSNull null]), (self.requestIdentifier ? self.requestIdentifier : [NSNull null]),
-            response];
+            (self.response ? self.response : [NSNull null])];
 }
 
 #pragma mark -

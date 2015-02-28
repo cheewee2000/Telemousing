@@ -40,7 +40,8 @@
 /**
  * Will add request into the queue if it is still not there. Returns whether request has been placed into queue or not
  */
-- (void)enqueueRequest:(PNBaseRequest *)request outOfOrder:(BOOL)shouldEnqueueRequestOutOfOrder withBlock:(void (^)(BOOL scheduled))enqueueCompletionBlock;
+- (BOOL)enqueueRequest:(PNBaseRequest *)request;
+- (BOOL)enqueueRequest:(PNBaseRequest *)request outOfOrder:(BOOL)shouldEnqueueRequestOutOfOrder;
 - (void)removeRequest:(PNBaseRequest *)request;
 
 /**

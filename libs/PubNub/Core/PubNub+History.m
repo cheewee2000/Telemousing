@@ -515,18 +515,18 @@
 - (void)requestHistoryForChannel:(PNChannel *)channel from:(PNDate *)startDate to:(PNDate *)endDate limit:(NSUInteger)limit
                   reverseHistory:(BOOL)shouldReverseMessageHistory includingTimeToken:(BOOL)shouldIncludeTimeToken
           reschedulingMethodCall:(BOOL)isMethodCallRescheduled withCompletionBlock:(PNClientHistoryLoadHandlingBlock)handleBlock {
-    
-    [self pn_dispatchBlock:^{
+
+    [PNLogger logGeneralMessageFrom:self withParametersFromBlock:^NSArray *{
+
+        return @[PNLoggerSymbols.api.historyFetchAttempt, (channel ? channel : [NSNull null]),
+                 (startDate ? startDate : [NSNull null]), (endDate ? endDate : [NSNull null]),
+                 @(limit), @(shouldReverseMessageHistory), @(shouldIncludeTimeToken),
+                 [self humanReadableStateFrom:self.state]];
+    }];
+
+    [self performAsyncLockingBlock:^{
         
-        [PNLogger logGeneralMessageFrom:self withParametersFromBlock:^NSArray *{
-            
-            return @[PNLoggerSymbols.api.historyFetchAttempt, (channel ? channel : [NSNull null]),
-                     (startDate ? startDate : [NSNull null]), (endDate ? endDate : [NSNull null]),
-                     @(limit), @(shouldReverseMessageHistory), @(shouldIncludeTimeToken),
-                     [self humanReadableStateFrom:self.state]];
-        }];
-        
-        [self performAsyncLockingBlock:^{
+        [self pn_dispatchAsynchronouslyBlock:^{
             
             if (!isMethodCallRescheduled) {
                 
@@ -537,7 +537,7 @@
             NSInteger statusCode = [self requestExecutionPossibilityStatusCode];
             if (statusCode == 0) {
                 
-                [PNLogger logGeneralMessageFrom:self withParametersFromBlock:^NSArray * {
+                [PNLogger logGeneralMessageFrom:self withParametersFromBlock:^NSArray *{
                     
                     return @[PNLoggerSymbols.api.fetchingHistory, [self humanReadableStateFrom:self.state]];
                 }];
@@ -556,7 +556,7 @@
             // Looks like client can't send request because of some reasons
             else {
                 
-                [PNLogger logGeneralMessageFrom:self withParametersFromBlock:^NSArray * {
+                [PNLogger logGeneralMessageFrom:self withParametersFromBlock:^NSArray *{
                     
                     return @[PNLoggerSymbols.api.historyFetchImpossible, [self humanReadableStateFrom:self.state]];
                 }];
@@ -568,25 +568,22 @@
                 
                 if (handleBlock && !isMethodCallRescheduled) {
                     
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        
-                        handleBlock(nil, channel, startDate, endDate, historyFetchError);
-                    });
+                    handleBlock(nil, channel, startDate, endDate, historyFetchError);
                 }
             }
-        }
-               postponedExecutionBlock:^{
-                   
-                   [PNLogger logGeneralMessageFrom:self withParametersFromBlock:^NSArray *{
-                       
-                       return @[PNLoggerSymbols.api.postponeHistoryFetching, [self humanReadableStateFrom:self.state]];
-                   }];
-                   
-                   [self postponeRequestHistoryForChannel:channel from:startDate to:endDate limit:limit
-                                           reverseHistory:shouldReverseMessageHistory includingTimeToken:shouldIncludeTimeToken
-                                   reschedulingMethodCall:isMethodCallRescheduled withCompletionBlock:handleBlock];
+        }];
+    }
+           postponedExecutionBlock:^{
+
+               [PNLogger logGeneralMessageFrom:self withParametersFromBlock:^NSArray *{
+
+                   return @[PNLoggerSymbols.api.postponeHistoryFetching, [self humanReadableStateFrom:self.state]];
                }];
-    }];
+
+               [self postponeRequestHistoryForChannel:channel from:startDate to:endDate limit:limit
+                                       reverseHistory:shouldReverseMessageHistory includingTimeToken:shouldIncludeTimeToken
+                               reschedulingMethodCall:isMethodCallRescheduled withCompletionBlock:handleBlock];
+           }];
 }
 
 - (void)postponeRequestHistoryForChannel:(PNChannel *)channel from:(PNDate *)startDate to:(PNDate *)endDate limit:(NSUInteger)limit
@@ -632,48 +629,53 @@
 #pragma mark - Service channel delegate methods
 
 - (void)serviceChannel:(PNServiceChannel *)serviceChannel didReceiveMessagesHistory:(PNMessagesHistory *)history {
-
-    void(^handlingBlock)(BOOL) = ^(BOOL shouldNotify){
-
+    
+    [self handleLockingOperationBlockCompletion:^{
+        
         [PNLogger logGeneralMessageFrom:self withParametersFromBlock:^NSArray *{
-
+            
             return @[PNLoggerSymbols.api.didReceiveHistory, [self humanReadableStateFrom:self.state]];
         }];
-
-        if (shouldNotify) {
-
+        
+        if ([self shouldChannelNotifyAboutEvent:serviceChannel]) {
+            
+            dispatch_block_t notifyBlock = ^{
+                
+                // Check whether delegate can response on history download event or not
+                if ([self.clientDelegate respondsToSelector:@selector(pubnubClient:didReceiveMessageHistory:forChannel:startingFrom:to:)]) {
+                    
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        
+                        [self.clientDelegate pubnubClient:self didReceiveMessageHistory:history.messages forChannel:history.channel
+                                             startingFrom:history.startDate to:history.endDate];
+                    });
+                }
+                
+                [self sendNotification:kPNClientDidReceiveMessagesHistoryNotification withObject:history];
+            };
+            
+            
             // In case if cryptor configured and ready to go, message will be decrypted.
             if (self.cryptoHelper.ready) {
-
-                [history.messages enumerateObjectsUsingBlock:^(PNMessage *message, NSUInteger messageIdx,
-                        BOOL *messageEnumeratorStop) {
-
-                    message.message = [self AESDecrypt:message.message];
+                
+                [self pn_dispatchAsynchronouslyBlock:^{
+                        
+                    [history.messages enumerateObjectsUsingBlock:^(PNMessage *message, NSUInteger messageIdx,
+                                                                   BOOL *messageEnumeratorStop) {
+                        
+                        message.message = [self AESDecrypt:message.message];
+                    }];
                 }];
+                
+                notifyBlock();
             }
-
-            // Check whether delegate can response on history download event or not
-            if ([self.clientDelegate respondsToSelector:@selector(pubnubClient:didReceiveMessageHistory:forChannel:startingFrom:to:)]) {
-
-                dispatch_async(dispatch_get_main_queue(), ^{
-
-                    [self.clientDelegate pubnubClient:self didReceiveMessageHistory:history.messages forChannel:history.channel
-                                         startingFrom:history.startDate to:history.endDate];
-                });
+            else {
+                
+                notifyBlock();
             }
-
-            [self sendNotification:kPNClientDidReceiveMessagesHistoryNotification withObject:history];
         }
-    };
-
-    [self checkShouldChannelNotifyAboutEvent:serviceChannel withBlock:^(BOOL shouldNotify) {
-
-        [self handleLockingOperationBlockCompletion:^{
-
-            handlingBlock(shouldNotify);
-        }
-                                    shouldStartNext:YES];
-    }];
+    }
+                                shouldStartNext:YES];
 }
 
 - (void)serviceChannel:(PNServiceChannel *)serviceChannel didFailHisoryDownloadForChannel:(PNChannel *)channel
@@ -681,7 +683,7 @@
     
     if (error.code != kPNRequestCantBeProcessedWithOutRescheduleError) {
         
-        [error replaceAssociatedObject:channel];
+        error.associatedObject = channel;
         [self notifyDelegateAboutHistoryDownloadFailedWithError:error];
     }
     else {
@@ -698,7 +700,7 @@
                                      limit:[[options valueForKey:@"limit"] integerValue]
                             reverseHistory:[[options valueForKey:@"revertMessages"] boolValue]
                         includingTimeToken:[[options valueForKey:@"includeTimeToken"] boolValue]
-                    reschedulingMethodCall:YES withCompletionBlock:nil];
+                    reschedulingMethodCall:YES withCompletionBlock:(id)@""];
         }];
     }
 }

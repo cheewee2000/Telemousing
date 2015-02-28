@@ -11,6 +11,8 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "NSDate+PNAdditions.h"
+#import "PNLogger+Protected.h"
 #import "PNStructures.h"
 
 
@@ -85,6 +87,23 @@
 
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wunused-function"
+
+
+static void PNLog(PNLogLevel level, id sender, ...);
+void PNLog(PNLogLevel level, id sender, ...) {
+
+    va_list args;
+    va_start(args, sender);
+    NSString *logFormatString = va_arg(args, NSString*);
+    NSString *formattedLogString = [[NSString alloc] initWithFormat:logFormatString arguments:args];
+    va_end(args);
+    
+    [PNLogger logFrom:sender forLevel:level withParametersFromBlock:^NSArray *{
+        
+        return @[(formattedLogString ? formattedLogString : @"nothing to say")];
+    }];
+}
+
 
 #pragma mark - Misc functions
 

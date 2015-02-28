@@ -162,7 +162,6 @@ static NSUInteger const kPNResponseTimeTokenElementIndexForEvent = 1;
             NSMutableArray *eventObjects = [NSMutableArray arrayWithCapacity:[events count]];
             [events enumerateObjectsUsingBlock:^(id event, NSUInteger eventIdx, BOOL *eventEnumeratorStop) {
 
-                __block BOOL isPresenceObservationChannel = NO;
                 PNChannel* (^channelExtractBlock)(NSString *) = ^(NSString *channelName) {
                     
                     // Retrieve reference on channel on which event is occurred
@@ -170,8 +169,7 @@ static NSUInteger const kPNResponseTimeTokenElementIndexForEvent = 1;
                     
                     // Checking whether event occurred on presence observing channel or no and retrieve reference on
                     // original channel
-                    isPresenceObservationChannel = ([channel isPresenceObserver]);
-                    if (isPresenceObservationChannel) {
+                    if ([channel isPresenceObserver]) {
                         
                         channel = [(PNChannelPresence *)channel observedChannel];
                     }
@@ -183,28 +181,27 @@ static NSUInteger const kPNResponseTimeTokenElementIndexForEvent = 1;
                 PNChannel *detailedChannel = ([channelDetails count] ? channelExtractBlock([channelDetails objectAtIndex:eventIdx]): nil);
 
                 id eventObject = nil;
-                PNChannelGroup *group = nil;
-                PNChannel *targetChannel = (detailedChannel ? detailedChannel : channel);
-                if (detailedChannel && channel) {
-                    
-                    if (channel.isChannelGroup) {
-                        
-                        group = (PNChannelGroup *)channel;
-                    }
-                }
 
                 // Checking whether event presence event or not
-                if (isPresenceObservationChannel && [event isKindOfClass:[NSDictionary class]] &&
-                    [PNPresenceEvent isPresenceEventObject:event]) {
+                if ([event isKindOfClass:[NSDictionary class]] && [PNPresenceEvent isPresenceEventObject:event]) {
                     
-                    eventObject = [PNPresenceEvent presenceEventForResponse:event
-                                                                  onChannel:targetChannel
-                                                               channelGroup:group];
+                    eventObject = [PNPresenceEvent presenceEventForResponse:event];
+                    ((PNPresenceEvent *)eventObject).channel = (detailedChannel ? detailedChannel : channel);
                 }
                 else {
+                    
+                    PNChannelGroup *group = nil;
+                    PNChannel *targetChannel = (detailedChannel ? detailedChannel : channel);
+                    if (detailedChannel && channel) {
+                        
+                        if (channel.isChannelGroup) {
+                            
+                            group = (PNChannelGroup *)channel;
+                        }
+                    }
 
-                    eventObject = [PNMessage messageFromServiceResponse:event onChannel:targetChannel
-                                                           channelGroup:group atDate:eventDate];
+                    eventObject = [PNMessage messageFromServiceResponse:event onChannel:targetChannel channelGroup:group
+                                                                 atDate:eventDate];
                 }
 
                 [eventObjects addObject:eventObject];

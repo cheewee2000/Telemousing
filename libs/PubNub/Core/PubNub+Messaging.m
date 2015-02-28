@@ -8,7 +8,6 @@
 
 #import "PubNub+Messaging.h"
 #import "NSObject+PNAdditions.h"
-#import "PNMessage+Protected.h"
 #import "PNServiceChannel.h"
 #import "PubNub+Protected.h"
 #import "PNNotifications.h"
@@ -44,7 +43,9 @@
  In case if value set to \c YES it will mean that method call has been rescheduled and probably there is no handler
  block which client should use for observation notification.
  */
-- (PNMessage *)sendMessage:(id)message toChannel:(PNChannel *)channel alreadyEncrypted:(BOOL)alreadyEncrypted compressed:(BOOL)shouldCompressMessage storeInHistory:(BOOL)shouldStoreInHistory reschedulingMethodCall:(BOOL)isMethodCallRescheduled withCompletionBlock:(PNClientMessageProcessingBlock)success;
+- (PNMessage *)sendMessage:(id)message toChannel:(PNChannel *)channel compressed:(BOOL)shouldCompressMessage
+            storeInHistory:(BOOL)shouldStoreInHistory reschedulingMethodCall:(BOOL)isMethodCallRescheduled
+       withCompletionBlock:(PNClientMessageProcessingBlock)success;
 
 /**
  Postpone message sending user request so it will be executed in future.
@@ -76,7 +77,9 @@
  find out what caused error (check PNErrorCodes header file and use \a -localizedDescription / \a -localizedFailureReason 
  and \a -localizedRecoverySuggestion to get human readable description for error).
  */
-- (void)postponeSendMessage:(id)message toChannel:(PNChannel *)channel alreadyEncrypted:(BOOL)alreadyEncrypted compressed:(BOOL)shouldCompressMessage storeInHistory:(BOOL)shouldStoreInHistory reschedulingMethodCall:(BOOL)isMethodCallRescheduled withCompletionBlock:(id)success;
+- (void)postponeSendMessage:(id)message toChannel:(PNChannel *)channel compressed:(BOOL)shouldCompressMessage
+             storeInHistory:(BOOL)shouldStoreInHistory reschedulingMethodCall:(BOOL)isMethodCallRescheduled
+        withCompletionBlock:(id)success;
 
 
 #pragma mark - Misc methods
@@ -492,13 +495,13 @@ withCompletionBlock:(PNClientMessageProcessingBlock)success {
 - (PNMessage *)sendMessage:(id)message toChannel:(PNChannel *)channel compressed:(BOOL)shouldCompressMessage
             storeInHistory:(BOOL)shouldStoreInHistory withCompletionBlock:(PNClientMessageProcessingBlock)success {
 
-    return [self sendMessage:message toChannel:channel alreadyEncrypted:NO compressed:shouldCompressMessage
-              storeInHistory:shouldStoreInHistory reschedulingMethodCall:NO withCompletionBlock:success];
+    return [self sendMessage:message toChannel:channel compressed:shouldCompressMessage storeInHistory:shouldStoreInHistory
+      reschedulingMethodCall:NO withCompletionBlock:success];
 }
 
-- (PNMessage *)sendMessage:(id)message toChannel:(PNChannel *)channel alreadyEncrypted:(BOOL)alreadyEncrypted
-                compressed:(BOOL)shouldCompressMessage storeInHistory:(BOOL)shouldStoreInHistory
-    reschedulingMethodCall:(BOOL)isMethodCallRescheduled withCompletionBlock:(PNClientMessageProcessingBlock)success {
+- (PNMessage *)sendMessage:(id)message toChannel:(PNChannel *)channel compressed:(BOOL)shouldCompressMessage
+            storeInHistory:(BOOL)shouldStoreInHistory reschedulingMethodCall:(BOOL)isMethodCallRescheduled
+       withCompletionBlock:(PNClientMessageProcessingBlock)success {
 
     [PNLogger logGeneralMessageFrom:self withParametersFromBlock:^NSArray *{
 
@@ -507,107 +510,76 @@ withCompletionBlock:(PNClientMessageProcessingBlock)success {
                  [self humanReadableStateFrom:self.state]];
     }];
 
-    __block PNError *error = nil;
-    PNMessage *messageObject = [PNMessage messageWithObject:message forChannel:channel compressed:shouldCompressMessage
+    // Create object instance
+    PNError *error = nil;
+    NSString *messageForSending = message;
+    if (self.cryptoHelper.ready) {
+        
+        if ([messageForSending isKindOfClass:[NSNumber class]]) {
+            
+            messageForSending = [(NSNumber *)message stringValue];
+        }
+        
+        PNError *encryptionError;
+        messageForSending = [self AESEncrypt:messageForSending error:&encryptionError];
+        
+        if (encryptionError != nil) {
+            
+            [PNLogger logCommunicationChannelErrorMessageFrom:self withParametersFromBlock:^NSArray *{
+                
+                return @[PNLoggerSymbols.requests.messagePost.messageBodyEncryptionError,
+                         (encryptionError ? encryptionError : [NSNull null])];
+            }];
+        }
+    }
+    PNMessage *messageObject = [PNMessage messageWithObject:messageForSending forChannel:channel compressed:shouldCompressMessage
                                              storeInHistory:shouldStoreInHistory error:&error];
 
     [self performAsyncLockingBlock:^{
-
-        if (!isMethodCallRescheduled) {
-
-            [self.observationCenter removeClientAsMessageProcessingObserver];
-        }
-
-        if (self.cryptoHelper.ready) {
-
-            // Try apply message encoding if required and possible
-            id messageForSending = message;
-            BOOL encrypted = NO;
-
-            if (!alreadyEncrypted) {
-
-                #ifndef CRYPTO_BACKWARD_COMPATIBILITY_MODE
-                if ([messageForSending isKindOfClass:[NSNumber class]]) {
-
-                    messageForSending = [(NSNumber *)message stringValue];
-                }
-                #endif
-
-                PNError *encryptionError;
-                #ifndef CRYPTO_BACKWARD_COMPATIBILITY_MODE
-                messageForSending = [PNJSONSerialization stringFromJSONObject:messageForSending];
-                #endif
-                messageForSending = [self AESEncrypt:messageForSending error:&encryptionError];
-
-                if (encryptionError != nil) {
-
-                    [PNLogger logCommunicationChannelErrorMessageFrom:self withParametersFromBlock:^NSArray *{
-
-                        return @[PNLoggerSymbols.requests.messagePost.messageBodyEncryptionError,
-                                (encryptionError ? encryptionError : [NSNull null])];
-                    }];
-                    messageForSending = message;
-                    error = encryptionError;
-                }
-                encrypted = (encryptionError == nil);
-                if (encrypted) {
-
-                    messageObject.encryptedMessage = messageForSending;
-                }
-            }
-            else {
-
-                encrypted = alreadyEncrypted;
-            }
-            messageObject.contentEncrypted = encrypted;
-        }
-        // Even w/o encryption message should be translated to string for further processinf with
-        // PubNub API.
-        else {
-
-            #ifndef CRYPTO_BACKWARD_COMPATIBILITY_MODE
-            messageObject.encryptedMessage = [PNJSONSerialization stringFromJSONObject:message];
-            #endif
-        }
-
-        // Check whether client is able to send request or not
-        NSInteger statusCode = [self requestExecutionPossibilityStatusCode];
-        if (statusCode == 0 && error == nil) {
-
-            [PNLogger logGeneralMessageFrom:self withParametersFromBlock:^NSArray * {
-
-                return @[PNLoggerSymbols.api.sendingMessage, [self humanReadableStateFrom:self.state]];
-            }];
-
-            if (success && !isMethodCallRescheduled) {
-
-                [self.observationCenter addClientAsMessageProcessingObserverWithBlock:success];
-            }
-
-            [self.serviceChannel sendMessage:messageObject];
-        }
-        // Looks like client can't send request because of some reasons
-        else {
-
-            [PNLogger logGeneralMessageFrom:self withParametersFromBlock:^NSArray * {
-
-                return @[PNLoggerSymbols.api.messageSendImpossible, [self humanReadableStateFrom:self.state]];
-            }];
-
-            PNError *sendingError = (error ? error : [PNError errorWithCode:statusCode]);
-            sendingError.associatedObject = messageObject;
-
-            [self notifyDelegateAboutMessageSendingFailedWithError:sendingError];
-
-
-            if (success && !isMethodCallRescheduled) {
+        
+        [self pn_dispatchAsynchronouslyBlock:^{
+            
+            if (!isMethodCallRescheduled) {
                 
-                dispatch_async(dispatch_get_main_queue(), ^{
+                [self.observationCenter removeClientAsMessageProcessingObserver];
+            }
+            
+            // Check whether client is able to send request or not
+            NSInteger statusCode = [self requestExecutionPossibilityStatusCode];
+            if (statusCode == 0 && error == nil) {
+                
+                [PNLogger logGeneralMessageFrom:self withParametersFromBlock:^NSArray *{
+                    
+                    return @[PNLoggerSymbols.api.sendingMessage, [self humanReadableStateFrom:self.state]];
+                }];
+                
+                if (success && !isMethodCallRescheduled) {
+                    
+                    [self.observationCenter addClientAsMessageProcessingObserverWithBlock:success];
+                }
+                
+                [self.serviceChannel sendMessage:messageObject];
+            }
+            // Looks like client can't send request because of some reasons
+            else {
+                
+                [PNLogger logGeneralMessageFrom:self withParametersFromBlock:^NSArray *{
+                    
+                    return @[PNLoggerSymbols.api.messageSendImpossible, [self humanReadableStateFrom:self.state]];
+                }];
+                
+                PNError *sendingError = error?error:[PNError errorWithCode:statusCode];
+                sendingError.associatedObject = messageObject;
+                
+                [self notifyDelegateAboutMessageSendingFailedWithError:sendingError];
+                
+                
+                if (success && !isMethodCallRescheduled) {
                     
                     success(PNMessageSendingError, sendingError);
-                });
+                }
             }
-        }
+        }];
     }
            postponedExecutionBlock:^{
 
@@ -616,24 +588,23 @@ withCompletionBlock:(PNClientMessageProcessingBlock)success {
                    return @[PNLoggerSymbols.api.postponeMessageSending, [self humanReadableStateFrom:self.state]];
                }];
 
-               [self postponeSendMessage:message toChannel:channel alreadyEncrypted:alreadyEncrypted
-                              compressed:shouldCompressMessage storeInHistory:shouldStoreInHistory
-                  reschedulingMethodCall:isMethodCallRescheduled withCompletionBlock:success];
+               [self postponeSendMessage:message toChannel:channel compressed:shouldCompressMessage
+                          storeInHistory:shouldStoreInHistory reschedulingMethodCall:isMethodCallRescheduled
+                     withCompletionBlock:success];
            }];
 
 
     return messageObject;
 }
 
-- (void)postponeSendMessage:(id)message toChannel:(PNChannel *)channel alreadyEncrypted:(BOOL)alreadyEncrypted
-                 compressed:(BOOL)shouldCompressMessage storeInHistory:(BOOL)shouldStoreInHistory
-     reschedulingMethodCall:(BOOL)isMethodCallRescheduled withCompletionBlock:(id)success {
+- (void)postponeSendMessage:(id)message toChannel:(PNChannel *)channel compressed:(BOOL)shouldCompressMessage
+             storeInHistory:(BOOL)shouldStoreInHistory reschedulingMethodCall:(BOOL)isMethodCallRescheduled
+        withCompletionBlock:(id)success {
     
     id successCopy = (success ? [success copy] : nil);
-    [self postponeSelector:@selector(sendMessage:toChannel:alreadyEncrypted:compressed:storeInHistory:reschedulingMethodCall:withCompletionBlock:) forObject:self
-            withParameters:@[[PNHelper nilifyIfNotSet:message], [PNHelper nilifyIfNotSet:channel],
-                             @(alreadyEncrypted), @(shouldCompressMessage), @(shouldStoreInHistory),
-                             @(isMethodCallRescheduled), [PNHelper nilifyIfNotSet:successCopy]]
+    [self postponeSelector:@selector(sendMessage:toChannel:compressed:storeInHistory:reschedulingMethodCall:withCompletionBlock:) forObject:self
+            withParameters:@[[PNHelper nilifyIfNotSet:message], [PNHelper nilifyIfNotSet:channel], @(shouldCompressMessage),
+                             @(shouldStoreInHistory),  @(isMethodCallRescheduled), [PNHelper nilifyIfNotSet:successCopy]]
                 outOfOrder:isMethodCallRescheduled];
 }
 
@@ -811,10 +782,9 @@ withCompletionBlock:(PNClientMessageProcessingBlock)success {
 
 - (void)sendMessage:(PNMessage *)message compressed:(BOOL)shouldCompressMessage storeInHistory:(BOOL)shouldStoreInHistory
 withCompletionBlock:(PNClientMessageProcessingBlock)success {
-
-    [self    sendMessage:message.message toChannel:message.channel alreadyEncrypted:message.isContentEncrypted
-              compressed:shouldCompressMessage storeInHistory:shouldStoreInHistory
-  reschedulingMethodCall:NO withCompletionBlock:success];
+    
+    [self sendMessage:message.message toChannel:message.channel compressed:shouldCompressMessage storeInHistory:shouldStoreInHistory
+  withCompletionBlock:success];
 }
 
 
@@ -855,66 +825,55 @@ withCompletionBlock:(PNClientMessageProcessingBlock)success {
                  (message.channel ? message.channel : [NSNull null]),
                  [self humanReadableStateFrom:self.state]];
     }];
-
-    [self checkShouldChannelNotifyAboutEvent:channel withBlock:^(BOOL shouldNotify) {
-
-        if (shouldNotify) {
-
-            // Check whether delegate can handle message sending event or not
-            if ([self.clientDelegate respondsToSelector:@selector(pubnubClient:willSendMessage:)]) {
-
-                dispatch_async(dispatch_get_main_queue(), ^{
-
-                    [self.clientDelegate performSelector:@selector(pubnubClient:willSendMessage:) withObject:self
-                                              withObject:message];
-                });
-            }
-
-            [self sendNotification:kPNClientWillSendMessageNotification withObject:message];
+    
+    if ([self shouldChannelNotifyAboutEvent:channel]) {
+        
+        // Check whether delegate can handle message sending event or not
+        if ([self.clientDelegate respondsToSelector:@selector(pubnubClient:willSendMessage:)]) {
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+            
+                [self.clientDelegate performSelector:@selector(pubnubClient:willSendMessage:) withObject:self
+                                          withObject:message];
+            });
         }
-    }];
+        
+        [self sendNotification:kPNClientWillSendMessageNotification withObject:message];
+    }
 }
 
 - (void)serviceChannel:(PNServiceChannel *)channel didSendMessage:(PNMessage *)message {
-
-    void(^handlingBlock)(BOOL) = ^(BOOL shouldNotify){
-
+    
+    [self handleLockingOperationBlockCompletion:^{
+        
         [PNLogger logGeneralMessageFrom:self withParametersFromBlock:^NSArray *{
-
+            
             return @[PNLoggerSymbols.api.didSendMessage, [self humanReadableStateFrom:self.state]];
         }];
-
-        if (shouldNotify) {
-
+        
+        if ([self shouldChannelNotifyAboutEvent:channel]) {
+            
             // Check whether delegate can handle message sent event or not
             if ([self.clientDelegate respondsToSelector:@selector(pubnubClient:didSendMessage:)]) {
-
+                
                 dispatch_async(dispatch_get_main_queue(), ^{
-
-                    [self.clientDelegate performSelector:@selector(pubnubClient:didSendMessage:)
-                                              withObject:self withObject:message];
+                
+                    [self.clientDelegate performSelector:@selector(pubnubClient:didSendMessage:) withObject:self
+                                              withObject:message];
                 });
             }
-
+            
             [self sendNotification:kPNClientDidSendMessageNotification withObject:message];
         }
-    };
-
-    [self checkShouldChannelNotifyAboutEvent:channel withBlock:^(BOOL shouldNotify) {
-
-        [self handleLockingOperationBlockCompletion:^{
-
-            handlingBlock(shouldNotify);
-        }
-                                    shouldStartNext:YES];
-    }];
+    }
+                                shouldStartNext:YES];
 }
 
 - (void)serviceChannel:(PNServiceChannel *)channel didFailMessageSend:(PNMessage *)message withError:(PNError *)error {
     
     if (error.code != kPNRequestCantBeProcessedWithOutRescheduleError) {
         
-        [error replaceAssociatedObject:message];
+        error.associatedObject = message;
         [self notifyDelegateAboutMessageSendingFailedWithError:error];
     }
     else {
@@ -926,9 +885,8 @@ withCompletionBlock:(PNClientMessageProcessingBlock)success {
                 return @[PNLoggerSymbols.api.rescheduleMessageSending, [self humanReadableStateFrom:self.state]];
             }];
 
-            [self sendMessage:message.message toChannel:message.channel alreadyEncrypted:NO
-                   compressed:message.shouldCompressMessage storeInHistory:message.shouldStoreInHistory
-       reschedulingMethodCall:YES withCompletionBlock:nil];
+            [self sendMessage:message.message toChannel:message.channel compressed:message.shouldCompressMessage
+               storeInHistory:message.shouldStoreInHistory reschedulingMethodCall:YES withCompletionBlock:nil];
         }];
     }
 }

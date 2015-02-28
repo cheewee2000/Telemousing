@@ -32,13 +32,8 @@ struct PNMessageDataKeysStruct {
 
     /**
      Stores key under which message will be encoded.
-    */
+     */
     __unsafe_unretained NSString *message;
-
-    /**
-     Stores key under which encrypted message will be encoded.
-    */
-    __unsafe_unretained NSString *encryptedMessage;
 
     /**
      Stores key under which channel name will be encoded.
@@ -54,11 +49,6 @@ struct PNMessageDataKeysStruct {
      Stores key under which stored whether message should be stored on PubNub servers or not.
      */
     __unsafe_unretained NSString *store;
-    
-    /**
-     Stores key under which stored whether message content already has been encrypted or not.
-     */
-    __unsafe_unretained NSString *contentEncrypted;
 
     /**
      Stores key under which message receive will be encoded.
@@ -89,16 +79,6 @@ extern struct PNMessageDataKeysStruct PNMessageDataKeys;
 
 // Stores whether message should be stored on PubNub servers for future usage with History API.
 @property (nonatomic, assign, getter = shouldStoreInHistory) BOOL storeInHistory;
-
-// Stores whether message body has been encrypted or not
-@property (nonatomic, assign, getter = isContentEncrypted) BOOL contentEncrypted;
-
-/**
- Stores reference on message which should be sent. W/o configured cryptor, it will store reference
- on property stored in \c message.
- */
-@property (nonatomic, strong) id encryptedMessage;
-
 
 // Stores reference on channel to which this message
 // should be sent
