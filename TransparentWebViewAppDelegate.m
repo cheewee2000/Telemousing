@@ -128,7 +128,7 @@ CGFloat const titleBarHeight = 22.0f;
 - (void)pubnubClient:(PubNub *)client didReceiveMessage:(PNMessage *)message {
     followX=[[message.message objectForKey:@"x"]floatValue];
     followY=[[message.message objectForKey:@"y"]floatValue];
-    NSLog(@"received x %f, y %f",followX,followY);
+    //NSLog(@"received x %f, y %f",followX,followY);
 }
 
 -(void)moveMouse{
@@ -147,34 +147,39 @@ CGFloat const titleBarHeight = 22.0f;
     CGFloat x = [NSEvent mouseLocation].x / (float)screenRect.size.width;
     CGFloat y = [NSEvent mouseLocation].y / (float)screenRect.size.height;
     
-    
-    // Send mouse position w/ pubnub (published under chosen username?
-    NSLog(@"sending x %f, y %f", x, y);
-    
-    NSString *xs = [NSString stringWithFormat:@"%f", x];
-    NSString *ys = [NSString stringWithFormat:@"%f", y];
-    
-    //Publish on the channel
-    TransparentWebViewAppDelegate *weakSelf = self;
-    [PubNub sendMessage:@{@"x":xs, @"y":ys}
-              toChannel:[PNChannel channelWithName:[self usernameString]]
-    withCompletionBlock:^(PNMessageState sendingSate, id data) {
+    if( x != prevX || y != prevY ) {
         
-        switch (sendingSate) {
-            case PNMessageSending:
-                
-                PNLog(PNLogGeneralLevel, weakSelf, @"Sending message: %@", data);
-                break;
-            case PNMessageSent:
-                
-                PNLog(PNLogGeneralLevel, weakSelf, @"Message sent: %@", data);
-                break;
-            case PNMessageSendingError:
-                
-                PNLog(PNLogGeneralLevel, weakSelf, @"Message sending error: %@", data);
-                break;
-        }
-    }];
+        prevX = x;
+        prevY = y;
+    
+        // Send mouse position w/ pubnub (published under chosen username?
+        //NSLog(@"sending x %f, y %f", x, y);
+        
+        NSString *xs = [NSString stringWithFormat:@"%f", x];
+        NSString *ys = [NSString stringWithFormat:@"%f", y];
+        
+        //Publish on the channel
+        TransparentWebViewAppDelegate *weakSelf = self;
+        [PubNub sendMessage:@{@"x":xs, @"y":ys}
+                  toChannel:[PNChannel channelWithName:[self usernameString]]
+        withCompletionBlock:^(PNMessageState sendingSate, id data) {
+            
+            switch (sendingSate) {
+                case PNMessageSending:
+                    
+                    PNLog(PNLogGeneralLevel, weakSelf, @"Sending message: %@", data);
+                    break;
+                case PNMessageSent:
+                    
+                    PNLog(PNLogGeneralLevel, weakSelf, @"Message sent: %@", data);
+                    break;
+                case PNMessageSendingError:
+                    
+                    PNLog(PNLogGeneralLevel, weakSelf, @"Message sending error: %@", data);
+                    break;
+            }
+        }];
+    }
 }
 
 

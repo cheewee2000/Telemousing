@@ -42,6 +42,7 @@ extern NSString *const TWVMainTransparantWindowFrameKey;
     
     
     float followX ,followY;
+    CGFloat prevX, prevY;
 
 }
 
